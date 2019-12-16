@@ -1,0 +1,41 @@
+﻿@page
+@model UserModel
+@{
+}
+
+@using HaloEzAPI.Model.Response.Stats.Halo5;
+@using HaloEzAPI.Model.Response.MetaData.Halo5;
+
+<div>
+    <h2>Last 10 Matches</h2><br />
+</div>
+
+<div>
+    <table width="100%">
+        <tr>
+            <th>Season</th>
+            <th>Map</th>
+            <th>GameType</th>
+            <th>Date</th>
+        </tr>
+
+        @foreach (var match in Model.Matches.Results)
+        {
+            string seasonId = Model.SeasonIdName.Where(season => season.Id == match.SeasonId).FirstOrDefault()?.Name;
+            string mapId = Model.Maps.Where(map => map.Id == match.MapId).First().Name;
+            string gameType = Model.GameType.Where(game => game.Id == match.GameBaseVariantId).FirstOrDefault()?.Name;
+
+            if (seasonId == null){seasonId = "Unknown";}
+            if (mapId == null){mapId = "Unknown";}
+
+            <tr>
+                <td>@seasonId</td>
+                <td>@mapId</td>
+                <td>@gameType</td>
+                <td>@match.MatchCompletedDate.ISO8601Date.ToShortDateString()</td>
+            </tr>
+        }
+
+    </table>
+    <br />
+</div>

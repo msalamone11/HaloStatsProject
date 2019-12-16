@@ -1,0 +1,82 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/HaloStatsProject.csproj": {}
+  },
+  "projects": {
+    "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/HaloStatsProject.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/HaloStatsProject.csproj",
+        "projectName": "HaloStatsProject",
+        "projectPath": "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/HaloStatsProject.csproj",
+        "packagesPath": "/Users/marksalamone/.nuget/packages/",
+        "outputPath": "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/Users/marksalamone/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "dependencies": {
+            "HaloEzAPI": {
+              "target": "Package",
+              "version": "[2.6.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "System.Runtime": {
+              "target": "Package",
+              "version": "[4.3.1, )"
+            },
+            "System.Runtime.Caching": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.0.101/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

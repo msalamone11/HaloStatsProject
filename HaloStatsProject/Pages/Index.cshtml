@@ -1,0 +1,131 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div>
+    <form method="post">
+        <div class="form-group" style="float:left;">
+            <input name="GamerTag" type="text" id="txtGamerTag" placeholder="Gamertag" class="form-control" value="">
+        </div>
+        <input type="submit" >
+    </form>
+    <br />
+
+</div>
+
+<div class="text-center">
+    <h1 class="display-4">Match Details</h1>
+</div>
+
+<br />
+
+<div>
+    <h2>Basic</h2><br />
+</div>
+<div>
+    <table width="100%">
+        <tr>
+            <th>Gamer Tag</th>
+            <th>Kills</th>
+            <th>Deaths</th>
+            <th>Assists</th>
+            <th>Shots Fired</th>
+            <th>Shots Landed</th>
+        </tr>
+
+        @foreach(var player in Model.PlayerStats.PlayerStats)
+            {
+                //@Html.DisplayNameFor(model => model.PlayerStats.PlayerStats.First().PlayerScore)
+                //@Html.DisplayFor(model => model.PlayerStats.PlayerStats.First().PlayerScore)
+                <tr>
+                    <td>@player.Player.Gamertag</td>
+                    <td>@player.TotalKills</td>
+                    <td>@player.TotalDeaths</td>
+                    <td>@player.TotalAssists</td>
+                    <td>@player.TotalShotsFired</td>
+                    <td>@player.TotalShotsLanded</td>
+                </tr>
+            }
+
+    </table>
+    <br />
+</div>
+
+<div>
+    <h2>Damage</h2><br />
+</div>
+
+<div>
+    <table width="100%">
+        <tr>
+            <th>Gamer Tag</th>
+            <th>Total Damage</th>
+            <th>Grenade</th>
+            <th>Melee</th>
+            <th>Power Weapon</th>
+            <th>Weapon</th>
+            
+        </tr>
+        @foreach(var player in Model.PlayerStats.PlayerStats)
+            {
+                //@Html.DisplayNameFor(model => model.PlayerStats.PlayerStats.First().PlayerScore)
+                //@Html.DisplayFor(model => model.PlayerStats.PlayerStats.First().PlayerScore)
+                <tr>
+                    <td>@player.Player.Gamertag</td>
+                    <td>@Math.Round(player.TotalGrenadeDamage + player.TotalMeleeDamage +
+                       player.TotalPowerWeaponDamage + player.TotalWeaponDamage)</td>
+                    <td>@Math.Round(player.TotalGrenadeDamage)</td>
+                    <td>@Math.Round(player.TotalMeleeDamage)</td>
+                    <td>@Math.Round(player.TotalPowerWeaponDamage)</td>
+                    <td>@Math.Round(player.TotalWeaponDamage)</td>
+                    
+                </tr>
+            }
+    </table>
+    <br/>
+</div>
+
+<div>
+    <h2>Kills</h2><br />
+</div>
+
+<div>
+    <table width="100%">
+        
+        <tr>
+            
+            <th>Gamer Tag</th>
+            <th>Total Kills</th>
+            <th>Grenade</th>
+            <th>Ground Pound</th>
+            <th>Assass.</th>
+            <th>Power Weapon</th>
+            <th>Melee</th>
+            <th>Spartan Charge</th>
+            <th>Weapon</th>
+        </tr>
+        @foreach(var player in Model.PlayerStats.PlayerStats)
+            {
+                //@Html.DisplayNameFor(model => model.PlayerStats.PlayerStats.First().PlayerScore)
+                //@Html.DisplayFor(model => model.PlayerStats.PlayerStats.First().PlayerScore)
+                <tr>
+                    <td>@player.Player.Gamertag</td>
+                    <td>@player.TotalKills</td>
+                    <td>@player.TotalGrenadeKills</td>
+                    <td>@player.TotalGroundPoundKills</td>
+                    <td>@player.TotalAssassinations</td>
+                    <td>@player.TotalPowerWeaponKills</td>
+                    <td>@player.TotalMeleeKills</td>
+                    <td>@player.TotalShoulderBashKills</td>
+                    <td>
+                        @(player.TotalKills - (player.TotalGrenadeKills + player.TotalGroundPoundKills + player.TotalAssassinations +
+                        player.TotalPowerWeaponKills + player.TotalMeleeKills + player.TotalShoulderBashKills))
+                    </td>
+                    
+                </tr>
+            }
+    </table>
+</div>
+
