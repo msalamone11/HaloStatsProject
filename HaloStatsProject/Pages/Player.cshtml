@@ -6,36 +6,84 @@
 @using HaloEzAPI.Model.Response.Stats.Halo5;
 @using HaloEzAPI.Model.Response.MetaData.Halo5;
 
-<div>
-    <h2>Last 10 Matches</h2><br />
-</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <div style="background-color:lightgrey;">
+        Last Games for @Model.GamerTag
+        </div>
+        <div>
+            <label for="Arena">Arena</label>
+        <input type="radio" value="Arena" selected>
+        <label for="Custom Games">Custom Games</label>
+        <input type="radio" value="Custom Games">
+        </div>
 
-<div>
-    <table width="100%">
-        <tr>
-            <th>Season</th>
-            <th>Map</th>
-            <th>GameType</th>
-            <th>Date</th>
-        </tr>
-
-        @foreach (var match in Model.Matches.Results)
+            @foreach (var match in Model.Matches.Results)
         {
-            string seasonId = Model.SeasonIdName.Where(season => season.Id == match.SeasonId).FirstOrDefault()?.Name;
-            string mapId = Model.Maps.Where(map => map.Id == match.MapId).First().Name;
-            string gameType = Model.GameType.Where(game => game.Id == match.GameBaseVariantId).FirstOrDefault()?.Name;
+            <div>
 
-            if (seasonId == null){seasonId = "Unknown";}
-            if (mapId == null){mapId = "Unknown";}
+                @foreach (MatchPlayer player in @match.Players)
+                {
 
-            <tr>
-                <td>@seasonId</td>
-                <td>@mapId</td>
-                <td>@gameType</td>
-                <td>@match.MatchCompletedDate.ISO8601Date.ToShortDateString()</td>
-            </tr>
+                    @player.Result @player.Rank
+
+                    <div>
+                        Cool Map
+                        Kills
+                        Ass
+                        Spread
+                    </div>
+                }
+            </div>
         }
 
-    </table>
-    <br />
+    </div>
+    <div class="col-sm">
+    <div class="col">
+<div style="background-color:lightgrey;">
+        HCS SEASON YEAR / Something / Something
+        </div>
+        @foreach (var match in Model.Matches.Results)
+        {
+            <div>
+
+                @foreach (MatchPlayer player in @match.Players)
+                {
+                    <span>Use latest match endpoint instead</span>
+                    @player.Player.Gamertag
+                }
+            </div>
+        }
+
+    </div><div class="col">
+<div style="background-color:lightgrey;">
+        Player Weapon Usage
+        </div>
+        <div>Some Gun</div>
+        <div>Some Other Gun</div>
+    </div>
+    </div>
+    <div class="col-sm">
+
+      <div class="col">
+<div style="background-color:lightgrey;">
+        Player Slaying Stats
+        </div>
+        <div>Some Table of Stats and graphs</div>
+    </div>
+    <div class="col">
+<div style="background-color:lightgrey;">
+        Player Details @Model.GamerTag
+        </div>
+        <div>Specific Counts Table</div>
+    </div>
+    <div class="col">
+<div style="background-color:lightgrey;">
+        Head 2 Head
+        </div>
+        <div>Some One on One stats</div>
+    </div>
+    </div>
+  </div>
 </div>
