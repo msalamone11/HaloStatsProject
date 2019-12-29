@@ -25,27 +25,48 @@
 
                 @foreach (MatchPlayer player in @match.Players)
                 {
+                    string mapId = Model.Maps.Where(map => map.Id == match.MapId).First().Name;
+                    double KillsDeathsRatio; // double result = (double)a / b;
+
+                    if (player.TotalKills == 0)
+                    {
+                        KillsDeathsRatio = 0;
+                    }
+                    else if (player.TotalDeaths == 0){
+                        KillsDeathsRatio = 0;
+                    }
+                    else
+                    {
+                        KillsDeathsRatio = Math.Round((double)player.TotalKills / player.TotalDeaths, 2, MidpointRounding.AwayFromZero);
+                    }
+
+                    if (mapId == null){mapId = "Unknown";}
 
                     @player.Result @player.Rank
 
                     <div>
-                        Cool Map
-                        Kills
-                        Ass
-                        Spread
+                        @mapId
+                        K/D: @KillsDeathsRatio
                     </div>
+                    <div>
+                        Kills: @player.TotalKills
+                        Assists: @player.TotalAssists
+                        Deaths: @player.TotalDeaths
+                    </div>
+                    <br />
                 }
             </div>
         }
-
     </div>
     <div class="col-sm">
     <div class="col">
+
 <div style="background-color:lightgrey;">
-        HCS SEASON YEAR / Something / Something
+        HCS Season ID / GameType / Map ID
         </div>
         @foreach (var match in Model.Matches.Results)
         {
+            
             <div>
 
                 @foreach (MatchPlayer player in @match.Players)
@@ -54,6 +75,7 @@
                     @player.Player.Gamertag
                 }
             </div>
+            
         }
 
     </div><div class="col">

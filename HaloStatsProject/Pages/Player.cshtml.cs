@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HaloEzAPI;
 using HaloEzAPI.Model.Response.MetaData.Halo5;
@@ -8,7 +6,8 @@ using HaloEzAPI.Model.Response.Stats.Halo5;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace HaloStatsProject.Pages {
+namespace HaloStatsProject.Pages
+{
     public class UserModel : PageModel {
 
         private readonly ILogger<UserModel> _logger;

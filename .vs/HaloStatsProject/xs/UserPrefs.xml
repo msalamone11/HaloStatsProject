@@ -1,27 +1,22 @@
 ﻿<Properties StartupConfiguration="{3F3118E8-2D22-4F30-A9BA-2B2DFF96B282}|Default">
   <MonoDevelop.Ide.ItemProperties.HaloStatsProject PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/Index.cshtml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/Privacy.cshtml">
     <Files>
-      <File FileName="HaloStatsProject/Pages/Player.cshtml" Line="1" Column="1" />
-      <File FileName="HaloStatsProject/Pages/Player.cshtml.cs" Line="1" Column="1" />
-      <File FileName="HaloStatsProject/Pages/Index.cshtml" Line="104" Column="48" />
-      <File FileName="HaloStatsProject/Pages/Index.cshtml.cs" Line="1" Column="1" />
+      <File FileName="HaloStatsProject/Pages/Privacy.cshtml" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HaloStatsProject" expanded="True">
+            <Node name="Solution Items" expanded="True" />
             <Node name="HaloStatsProject" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="Models" expanded="True" />
               <Node name="Pages" expanded="True">
-                <Node name="Shared" expanded="True" />
-                <Node name="Index.cshtml" expanded="True">
-                  <Node name="Index.cshtml.cs" selected="True" />
-                </Node>
+                <Node name="Index.cshtml" expanded="True" />
                 <Node name="Player.cshtml" expanded="True" />
+                <Node name="Privacy.cshtml" selected="True" />
               </Node>
-              <Node name="Properties" expanded="True" />
+              <Node name="Variables" expanded="True" />
               <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
