@@ -5,6 +5,7 @@
 
 @using HaloEzAPI.Model.Response.Stats.Halo5;
 @using HaloEzAPI.Model.Response.MetaData.Halo5;
+@using Variables;
 
 <div class="container">
   <div class="row">
@@ -26,27 +27,15 @@
                 @foreach (MatchPlayer player in @match.Players)
                 {
                     string mapId = Model.Maps.Where(map => map.Id == match.MapId).First().Name;
-                    double KillsDeathsRatio; // double result = (double)a / b;
-
-                    if (player.TotalKills == 0)
-                    {
-                        KillsDeathsRatio = 0;
-                    }
-                    else if (player.TotalDeaths == 0){
-                        KillsDeathsRatio = 0;
-                    }
-                    else
-                    {
-                        KillsDeathsRatio = Math.Round((double)player.TotalKills / player.TotalDeaths, 2, MidpointRounding.AwayFromZero);
-                    }
+                    double KillDeathsRatio = new GetKillDeathRatio(player).ratio; // double result = (double)a / b;
 
                     if (mapId == null){mapId = "Unknown";}
 
                     @player.Result @player.Rank
 
                     <div>
-                        @mapId
-                        K/D: @KillsDeathsRatio
+                        <a href="/MatchDetails?matchId=@match.Id.MatchId">@mapId</a>
+                        K/D: @KillDeathsRatio
                     </div>
                     <div>
                         Kills: @player.TotalKills
@@ -75,37 +64,8 @@
                     @player.Player.Gamertag
                 }
             </div>
-            
         }
-
-    </div><div class="col">
-<div style="background-color:lightgrey;">
-        Player Weapon Usage
-        </div>
-        <div>Some Gun</div>
-        <div>Some Other Gun</div>
     </div>
-    </div>
-    <div class="col-sm">
-
-      <div class="col">
-<div style="background-color:lightgrey;">
-        Player Slaying Stats
-        </div>
-        <div>Some Table of Stats and graphs</div>
-    </div>
-    <div class="col">
-<div style="background-color:lightgrey;">
-        Player Details @Model.GamerTag
-        </div>
-        <div>Specific Counts Table</div>
-    </div>
-    <div class="col">
-<div style="background-color:lightgrey;">
-        Head 2 Head
-        </div>
-        <div>Some One on One stats</div>
-    </div>
-    </div>
-  </div>
+</div>
+</div>
 </div>

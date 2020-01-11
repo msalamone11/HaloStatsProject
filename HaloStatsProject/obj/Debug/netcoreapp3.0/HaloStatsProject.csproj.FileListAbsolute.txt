@@ -56,3 +56,4 @@
 /Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/bin/Debug/netcoreapp3.0/System.Drawing.Common.dll
 /Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/obj/Debug/netcoreapp3.0/HaloStatsProject.csprojAssemblyReference.cache
 /Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/obj/Debug/netcoreapp3.0/Razor/Pages/Player.cshtml.g.cs
+/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/obj/Debug/netcoreapp3.0/Razor/Pages/MatchDetails.cshtml.g.cs

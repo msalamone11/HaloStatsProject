@@ -1,8 +1,13 @@
 ﻿<Properties StartupConfiguration="{3F3118E8-2D22-4F30-A9BA-2B2DFF96B282}|Default">
   <MonoDevelop.Ide.ItemProperties.HaloStatsProject PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/Privacy.cshtml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/MatchDetails.cshtml">
     <Files>
-      <File FileName="HaloStatsProject/Pages/Privacy.cshtml" Line="1" Column="1" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml" Line="177" Column="14" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml.cs" />
+      <File FileName="HaloStatsProject/Variables/GetBasicPlayerStatsDataTable.cs" />
+      <File FileName="HaloStatsProject/Variables/GetKillDeathRatio.cs" />
+      <File FileName="HaloStatsProject/Pages/Index.cshtml" />
+      <File FileName="HaloStatsProject/Pages/Index.cshtml.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,8 +18,9 @@
               <Node name="Dependencies" expanded="True" />
               <Node name="Pages" expanded="True">
                 <Node name="Index.cshtml" expanded="True" />
+                <Node name="MatchDetails.cshtml" expanded="True" selected="True" />
                 <Node name="Player.cshtml" expanded="True" />
-                <Node name="Privacy.cshtml" selected="True" />
+                <Node name="Privacy.cshtml" expanded="True" />
               </Node>
               <Node name="Variables" expanded="True" />
               <Node name="appsettings.json" expanded="True" />
