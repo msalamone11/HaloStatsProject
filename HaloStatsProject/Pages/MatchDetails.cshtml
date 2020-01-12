@@ -1,6 +1,7 @@
 ﻿@page
 @model MatchDetailsModel
 @using HaloEzAPI.Model.Response.Stats.Halo5.Arena;
+@using HaloEzAPI.Model.Response.MetaData;
 @{
     ViewData["Title"] = "Match Details";
 
@@ -55,6 +56,7 @@
 <div>
     <h2>Basic</h2><br />
 </div>
+
 <div>
     <table width="100%">
         <tr>
@@ -74,6 +76,8 @@
         {
             if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
             {
+                //TODO How could we display the players Current CSR?
+                //TODO How can we align the table rows to the left so that the tables line up on the page better?`
                 <tr>
                     <td>@player.Player.Gamertag</td>
                     <td>@player.TotalKills</td>
@@ -107,7 +111,6 @@
                 </tr>
             }
         }
-
     </table>
     <br />
 </div>
@@ -195,7 +198,7 @@
             <th title="Weapon Kills">Wpn.</th>
         </tr>
 
-        @foreach (var player in sortedPlayersByKills)
+        @foreach (var player in sortedPlayersByKills) //Winning Team Kills Stats
         {
             if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
             {
@@ -215,7 +218,7 @@
             }
         }
 
-        @foreach (var player in sortedPlayersByKills)
+        @foreach (var player in sortedPlayersByKills) //Losing Team Kills Stats
         {
             if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
             {
@@ -237,3 +240,63 @@
     </table>
     <br />
 </div>
+
+<div>
+    <h2>Objective</h2><br />
+</div>
+
+<div>
+    <table width="100%">
+
+        @{
+            //TODO need an 'if statement' here that will show a different table based on the GametypeVariant.
+        }
+
+        <tr>
+
+            <th>Gamer Tag</th>
+            <th title="Captured">Total</th>
+            <th title="Defended">K/D</th>
+            <th title="Secured">K/M</th>
+            <th title="Total Control">As.</th>
+            <th title="Assist">Gr.</th>
+            <th title="Spree">G.P.</th>
+            <th title="Lockdown">P.W.</th>
+        </tr>
+
+        @foreach (var player in sortedPlayersByKills) //Winning Team Objective Stats
+        {
+            //TODO Instead of using sortedPlayersByKills, we are going to need sortedPlayersBySumOfStrongholds. (sumOfStrongholds = Captured + Defended + Secured)
+
+            if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
+            {
+                <tr>
+                    <td>@player.Player.Gamertag</td>
+                    <td>@Model.PlayerStats.TeamStats.FirstOrDefault().RoundStats</td>
+                </tr>
+            }
+        }
+
+        @foreach (var player in sortedPlayersByKills) //Losing Team Objective Stats
+        {
+            if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+            {
+                <tr>
+                    <td>@player.Player.Gamertag</td>
+                </tr>
+            }
+        }
+    </table>
+    <br />
+</div>
+
+@{
+    /* TODO Need to add in an Objectives table for if the game is a Strongholds or CTF gametype.
+     * TODO How do we get the Objective stats? I believe you are supposed to use 'TeamStats' in MatchResult.
+     *        https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/Halo-5-Match-Result-Arena?
+     * TODO Use https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/Halo-5-Match-Result-Arena?
+     *        to get the players CSR using a combination of 'Tier' as well as 'PercentToNextTier'.
+     *        Players above 1500 will just be able to use the 'CSR' property.
+     * 
+     */
+}
