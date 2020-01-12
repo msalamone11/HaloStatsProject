@@ -3,14 +3,36 @@
 @using HaloEzAPI.Model.Response.Stats.Halo5.Arena;
 @{
     ViewData["Title"] = "Match Details";
+
+    double killsPerDeath(ArenaPlayerStat player)
+    {
+        return Math.Round((double)player.TotalKills / (double)player.TotalDeaths, 2);
+    }
+
+    var sortedPlayersByDamage = @Model.PlayerStats.PlayerStats.OrderByDescending(player => player.Rank).OrderByDescending(player => totalDamage(player));
     var sortedPlayersByKills = @Model.PlayerStats.PlayerStats.OrderByDescending(player => player.Rank).OrderByDescending(player => player.TotalKills);
+
     double totalDamage(ArenaPlayerStat player)
     {
 
         return Math.Round(player.TotalGrenadeDamage + player.TotalMeleeDamage + player.TotalPowerWeaponDamage + player.TotalWeaponDamage);
     }
-    var sortedPlayersByDamage = @Model.PlayerStats.PlayerStats.OrderByDescending(player => player.Rank).OrderByDescending(player => totalDamage(player));
-    int winningTeamId = 0; //Why will int not let me just let me not assign this a value. Doesn't work unless I do so I just set it to 0.
+
+    int totalWeaponKills(ArenaPlayerStat player)
+    {
+        return player.TotalKills - (player.TotalGrenadeKills + player.TotalGroundPoundKills + player.TotalAssassinations +
+               player.TotalPowerWeaponKills + player.TotalMeleeKills + player.TotalShoulderBashKills);
+    }
+
+    int winningTeamId = 0; //TODO Why will int not let me just let me not assign this a value. Doesn't work unless I do so I just set it to 0.
+    foreach (var player in sortedPlayersByKills) //Get the winningTeamId. How can we get this without a foreach loop?
+    {
+        if (player.Rank == 1)
+        {
+            winningTeamId = player.TeamId;
+            break;
+        }
+    }
 }
 
 <div>
@@ -37,21 +59,16 @@
     <table width="100%">
         <tr>
             <th>Gamer Tag</th>
-            <th>Kills</th>
-            <th>Deaths</th>
-            <th>Assists</th>
-            <th>Shots Fired</th>
-            <th>Shots Landed</th>
+            <th title="Total Kills">K.</th>
+            <th title="Deaths">D.</th>
+            <th title="Assists">A.</th>
+            <th title="Total Damage">Dmg.</th>
+            <th title="Headshots">H.S.</th>
+            <th title="Shots Fired">S.F.</th>
+            <th title="Shots Landed">S.L.</th>
+            <th title="Accuracy">Acc.</th>
+            <th title="Power Weapon Grabs">PWG</th>
         </tr>
-
-        @foreach (var player in sortedPlayersByKills) //Get the winningTeamId. How can we get this without a foreach loop?
-        {
-            if (player.Rank == 1)
-            {
-                winningTeamId = player.TeamId;
-                break;
-            }
-        }
 
         @foreach (var player in sortedPlayersByKills) //Winning Team Basic Stats
         {
@@ -62,8 +79,12 @@
                     <td>@player.TotalKills</td>
                     <td>@player.TotalDeaths</td>
                     <td>@player.TotalAssists</td>
+                    <td>@totalDamage(player)</td>
+                    <td>@player.TotalHeadshots</td>
                     <td>@player.TotalShotsFired</td>
                     <td>@player.TotalShotsLanded</td>
+                    <td>@Math.Round((decimal)player.TotalShotsLanded / (decimal)player.TotalShotsFired, 2)%</td>
+                    <td>@player.TotalPowerWeaponGrabs</td>
                 </tr>
             }
         }
@@ -77,8 +98,12 @@
                     <td>@player.TotalKills</td>
                     <td>@player.TotalDeaths</td>
                     <td>@player.TotalAssists</td>
+                    <td>@totalDamage(player)</td>
+                    <td>@player.TotalHeadshots</td>
                     <td>@player.TotalShotsFired</td>
                     <td>@player.TotalShotsLanded</td>
+                    <td>@Math.Round((decimal)player.TotalShotsLanded / (decimal)player.TotalShotsFired, 2)%</td>
+                    <td>@player.TotalPowerWeaponGrabs</td>
                 </tr>
             }
         }
@@ -95,11 +120,15 @@
     <table width="100%">
         <tr>
             <th>Gamer Tag</th>
-            <th>Total Damage</th>
-            <th>Grenade</th>
-            <th>Melee</th>
-            <th>Power Weapon</th>
-            <th>Weapon</th>
+            <th title="Total Damage">Total</th>
+            <th title="Damage Per Death">Dmg/D</th>
+            <th title="Damage Per Minute">Dmg/M</th>
+            <th title="Ground Pound">G.P.</th>
+            <th title="Grenade">Gr.</th>
+            <th title="Melee">Mel.</th>
+            <th title="Power Weapon">P.W.</th>
+            <th title="Spartan Charge">S.C.</th>
+            <th title="Weapon">Wpn.</th>
         </tr>
 
         @foreach (var player in sortedPlayersByDamage) //Winning Team Damage Stats
@@ -109,9 +138,13 @@
                 <tr>
                     <td>@player.Player.Gamertag</td>
                     <td>@totalDamage(player)</td>
+                    <td>@Math.Round(totalDamage(player) / player.TotalDeaths)</td>
+                    <td>@Math.Round(totalDamage(player) / player.TotalTimePlayed.TotalMinutes)</td>
+                    <td>@Math.Round(player.TotalGroundPoundDamage)</td>
                     <td>@Math.Round(player.TotalGrenadeDamage)</td>
                     <td>@Math.Round(player.TotalMeleeDamage)</td>
                     <td>@Math.Round(player.TotalPowerWeaponDamage)</td>
+                    <td>@Math.Round(player.TotalShoulderBashDamage)</td>
                     <td>@Math.Round(player.TotalWeaponDamage)</td>
                 </tr>
             }
@@ -124,9 +157,13 @@
                 <tr>
                     <td>@player.Player.Gamertag</td>
                     <td>@totalDamage(player)</td>
+                    <td>@Math.Round(totalDamage(player) / player.TotalDeaths)</td>
+                    <td>@Math.Round(totalDamage(player) / player.TotalTimePlayed.TotalMinutes)</td>
+                    <td>@Math.Round(player.TotalGroundPoundDamage)</td>
                     <td>@Math.Round(player.TotalGrenadeDamage)</td>
                     <td>@Math.Round(player.TotalMeleeDamage)</td>
                     <td>@Math.Round(player.TotalPowerWeaponDamage)</td>
+                    <td>@Math.Round(player.TotalShoulderBashDamage)</td>
                     <td>@Math.Round(player.TotalWeaponDamage)</td>
                 </tr>
             }
@@ -146,14 +183,16 @@
         <tr>
 
             <th>Gamer Tag</th>
-            <th>Total Kills</th>
-            <th>Grenade</th>
-            <th>Ground Pound</th>
-            <th>Assass.</th>
-            <th>Power Weapon</th>
-            <th>Melee</th>
-            <th>Spartan Charge</th>
-            <th>Weapon</th>
+            <th title="Total Kills">Total</th>
+            <th title="Kills Per Death">K/D</th>
+            <th title="Kills Per Minute">K/M</th>
+            <th title="Assassinations">As.</th>
+            <th title="Grenade Kills">Gr.</th>
+            <th title="Ground Pounds">G.P.</th>
+            <th title="Power Weapon Kills">P.W.</th>
+            <th title="Melees">Mel.</th>
+            <th title="Spartan Charges">S.C.</th>
+            <th title="Weapon Kills">Wpn.</th>
         </tr>
 
         @foreach (var player in sortedPlayersByKills)
@@ -163,16 +202,15 @@
                 <tr>
                     <td>@player.Player.Gamertag</td>
                     <td>@player.TotalKills</td>
+                    <td>@killsPerDeath(player)</td>
+                    <td>@Math.Round((double)player.TotalKills / (double)player.TotalTimePlayed.TotalMinutes, 2)</td>
+                    <td>@player.TotalAssassinations</td>
                     <td>@player.TotalGrenadeKills</td>
                     <td>@player.TotalGroundPoundKills</td>
-                    <td>@player.TotalAssassinations</td>
                     <td>@player.TotalPowerWeaponKills</td>
                     <td>@player.TotalMeleeKills</td>
                     <td>@player.TotalShoulderBashKills</td>
-                    <td>
-                        @(player.TotalKills - (player.TotalGrenadeKills + player.TotalGroundPoundKills + player.TotalAssassinations +
-                                                player.TotalPowerWeaponKills + player.TotalMeleeKills + player.TotalShoulderBashKills))
-                    </td>
+                    <td>@totalWeaponKills(player)</td>
                 </tr>
             }
         }
@@ -184,19 +222,18 @@
                 <tr>
                     <td>@player.Player.Gamertag</td>
                     <td>@player.TotalKills</td>
+                    <td>@killsPerDeath(player)</td>
+                    <td>@Math.Round((double)player.TotalKills / (double)player.TotalTimePlayed.TotalMinutes, 2)</td>
+                    <td>@player.TotalAssassinations</td>
                     <td>@player.TotalGrenadeKills</td>
                     <td>@player.TotalGroundPoundKills</td>
-                    <td>@player.TotalAssassinations</td>
                     <td>@player.TotalPowerWeaponKills</td>
                     <td>@player.TotalMeleeKills</td>
                     <td>@player.TotalShoulderBashKills</td>
-                    <td>
-                        @(player.TotalKills - (player.TotalGrenadeKills + player.TotalGroundPoundKills + player.TotalAssassinations +
-                                                player.TotalPowerWeaponKills + player.TotalMeleeKills + player.TotalShoulderBashKills))
-                    </td>
+                    <td>@totalWeaponKills(player)</td>
                 </tr>
             }
         }
-
     </table>
+    <br />
 </div>
