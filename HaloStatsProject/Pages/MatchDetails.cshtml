@@ -20,27 +20,27 @@
         }
         else if (player.CurrentCsr.Tier == 6)
         {
-            currentCSR = 1450 + (player.CurrentCsr.PercentToNextTier);
+            currentCSR = 1450 + (player.CurrentCsr.PercentToNextTier) / 2;
         }
         else if (player.CurrentCsr.Tier == 5)
         {
-            currentCSR = 1400 + (player.CurrentCsr.PercentToNextTier);
+            currentCSR = 1400 + (player.CurrentCsr.PercentToNextTier) / 2;
         }
         else if (player.CurrentCsr.Tier == 4)
         {
-            currentCSR = 1350 + (player.CurrentCsr.PercentToNextTier);
+            currentCSR = 1350 + (player.CurrentCsr.PercentToNextTier) / 2;
         }
         else if (player.CurrentCsr.Tier == 3)
         {
-            currentCSR = 1300 + (player.CurrentCsr.PercentToNextTier);
+            currentCSR = 1300 + (player.CurrentCsr.PercentToNextTier) / 2;
         }
         else if (player.CurrentCsr.Tier == 2)
         {
-            currentCSR = 1250 + (player.CurrentCsr.PercentToNextTier);
+            currentCSR = 1250 + (player.CurrentCsr.PercentToNextTier) / 2;
         }
         else if (player.CurrentCsr.Tier == 1)
         {
-            currentCSR = 1200 + (player.CurrentCsr.PercentToNextTier);
+            currentCSR = 1200 + (player.CurrentCsr.PercentToNextTier) / 2;
         }
         else
         {
@@ -84,27 +84,27 @@
         }
         else if (player.PreviousCsr.Tier == 6)
         {
-            previousCSR = 1450 + (player.PreviousCsr.PercentToNextTier);
+            previousCSR = 1450 + (player.PreviousCsr.PercentToNextTier) / 2;
         }
         else if (player.PreviousCsr.Tier == 5)
         {
-            previousCSR = 1400 + (player.PreviousCsr.PercentToNextTier);
+            previousCSR = 1400 + (player.PreviousCsr.PercentToNextTier) / 2;
         }
         else if (player.PreviousCsr.Tier == 4)
         {
-            previousCSR = 1350 + (player.PreviousCsr.PercentToNextTier);
+            previousCSR = 1350 + (player.PreviousCsr.PercentToNextTier) / 2;
         }
         else if (player.PreviousCsr.Tier == 3)
         {
-            previousCSR = 1300 + (player.PreviousCsr.PercentToNextTier);
+            previousCSR = 1300 + (player.PreviousCsr.PercentToNextTier) / 2;
         }
         else if (player.PreviousCsr.Tier == 2)
         {
-            previousCSR = 1250 + (player.PreviousCsr.PercentToNextTier);
+            previousCSR = 1250 + (player.PreviousCsr.PercentToNextTier) / 2;
         }
         else if (player.PreviousCsr.Tier == 1)
         {
-            previousCSR = 1200 + (player.PreviousCsr.PercentToNextTier);
+            previousCSR = 1200 + (player.PreviousCsr.PercentToNextTier) / 2;
         }
         else
         {
@@ -140,6 +140,7 @@
     int winningTeamTotalPreviousCsr = 0;
     int winningTeamTotalCurrentCsr = 0;
     int winningTeamTotalCsrDifferencePostMatch = 0;
+    int winningTeamTotalPlayers = 0;
 
     int losingTeamTotalKills = 0;
     int losingTeamTotalDeaths = 0;
@@ -153,6 +154,7 @@
     int losingTeamTotalPreviousCsr = 0;
     int losingTeamTotalCurrentCsr = 0;
     int losingTeamTotalCsrDifferencePostMatch = 0;
+    int losingTeamTotalPlayers = 0;
 
     double winningTeamDamagePerDeath = 0;
     double winningTeamTotalTimePlayed = 0;
@@ -256,8 +258,8 @@
             <th title="Accuracy">Acc.</th>
             <th title="Power Weapon Grabs">PWG</th>
             <th title="Headshots">H.S.</th>
-            <th title="Previous CSR">P.CSR</th>
-            <th title="Current CSR">C.CSR</th>
+            <th title="Previous Team Average CSR">P.CSR</th>
+            <th title="Current Team Average CSR">C.CSR</th>
             <th title="CSR Difference Postmatch">Diff.</th>
         </tr>
 
@@ -296,13 +298,14 @@
                 winningTeamTotalPreviousCsr += previousCSR(player);
                 winningTeamTotalCurrentCsr += currentCSR(player);
                 winningTeamTotalCsrDifferencePostMatch += (currentCSR(player) - previousCSR(player));
+                winningTeamTotalPlayers += 1;
 
             }
         }
 
         @{
-            winningTeamAccuracy = Math.Round((decimal)winningTeamTotalShotsLanded / winningTeamTotalShotsFired);
-            decimal winningTeamKDA = (winningTeamTotalKills + (decimal)(winningTeamTotalAssists / 3) / winningTeamTotalDeaths);
+            winningTeamAccuracy = (decimal)winningTeamTotalShotsLanded / winningTeamTotalShotsFired;
+            decimal winningTeamKDA = ((winningTeamTotalKills + (winningTeamTotalAssists / 3)) / (decimal)winningTeamTotalDeaths);
         }
 
     <tr>
@@ -316,8 +319,8 @@
         <td>@winningTeamAccuracy.ToString("F2")%</td>
         <td>@winningTeamTotalPowerWeaponGrabs</td>
         <td>@winningTeamTotalHeadshots</td>
-        <td>@winningTeamTotalPreviousCsr</td>
-        <td>@winningTeamTotalCurrentCsr</td>
+        <td title="Team Previous CSR Average">@(winningTeamTotalPreviousCsr / winningTeamTotalPlayers)</td>
+        <td title="Team Postmatch CSR Average">@(winningTeamTotalCurrentCsr / winningTeamTotalPlayers)</td>
         <td>@winningTeamTotalCsrDifferencePostMatch</td>
     </tr>
 
@@ -336,12 +339,13 @@
                 losingTeamTotalPreviousCsr += previousCSR(player);
                 losingTeamTotalCurrentCsr += currentCSR(player);
                 losingTeamTotalCsrDifferencePostMatch += (currentCSR(player) - previousCSR(player));
+                losingTeamTotalPlayers += 1;
             }
         }
 
         @{
-            losingTeamAccuracy = Math.Round((decimal)losingTeamTotalShotsLanded / losingTeamTotalShotsFired);
-            decimal losingTeamKDA = (losingTeamTotalKills + (decimal)(losingTeamTotalAssists / 3) / losingTeamTotalDeaths);
+            losingTeamAccuracy = (decimal)losingTeamTotalShotsLanded / losingTeamTotalShotsFired;
+            decimal losingTeamKDA = ((losingTeamTotalKills + (losingTeamTotalAssists / 3)) / (decimal)losingTeamTotalDeaths);
         }
 
         <tr>
@@ -355,8 +359,8 @@
             <td>@losingTeamAccuracy.ToString("F2")%</td>
             <td>@losingTeamTotalPowerWeaponGrabs</td>
             <td>@losingTeamTotalHeadshots</td>
-            <td>@losingTeamTotalPreviousCsr</td>
-            <td>@losingTeamTotalCurrentCsr</td>
+            <td title="Team Previous CSR Average">@(losingTeamTotalPreviousCsr / losingTeamTotalPlayers)</td>
+            <td title="Team Postmatch CSR Average">@(losingTeamTotalCurrentCsr / losingTeamTotalPlayers)</td>
             <td>@losingTeamTotalCsrDifferencePostMatch</td>
         </tr>
 
@@ -518,14 +522,17 @@
         <tr>
 
             <th>Gamer Tag</th>
-            <th title="Total Kills">Total</th>
+            <th title="Kills">K.</th>
+            <th title="Deaths">D.</th>
+            <th title="Assists">A.</th>
+            <th title="KDA = (Kills +(Assists / 3) / Deaths">KDA</th>
             <th title="Kills Per Death">K/D</th>
             <th title="Kills Per Minute">K/M</th>
             <th title="Assassinations">As.</th>
             <th title="Grenade Kills">Gr.</th>
             <th title="Ground Pounds">G.P.</th>
-            <th title="Power Weapon Kills">P.W.</th>
             <th title="Melees">Mel.</th>
+            <th title="Power Weapon Kills">P.W.</th>
             <th title="Spartan Charges">S.C.</th>
             <th title="Weapon Kills">Wpn.</th>
         </tr>
@@ -534,21 +541,26 @@
         {
             if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
             {
+
+                decimal killsDeathsAssists = (player.TotalKills + (decimal)(player.TotalAssists / 3)) / (decimal)player.TotalDeaths;
+
                 <tr>
                     <td>@player.Player.Gamertag</td>
                     <td>@player.TotalKills</td>
+                    <td>@player.TotalDeaths</td>
+                    <td>@player.TotalAssists</td>
+                    <td>@killsDeathsAssists.ToString("F2")</td>
                     <td>@killsPerDeath(player).ToString("F2")</td>
-                    <td>@Math.Round((double)player.TotalKills / player.TotalTimePlayed.TotalMinutes).ToString("F2")</td>
+                    <td>@((player.TotalKills / player.TotalTimePlayed.TotalMinutes).ToString("F2"))</td>
                     <td>@player.TotalAssassinations</td>
                     <td>@player.TotalGrenadeKills</td>
                     <td>@player.TotalGroundPoundKills</td>
-                    <td>@player.TotalPowerWeaponKills</td>
                     <td>@player.TotalMeleeKills</td>
+                    <td>@player.TotalPowerWeaponKills</td>
                     <td>@player.TotalShoulderBashKills</td>
                     <td>@totalWeaponKills(player)</td>
                 </tr>
 
-                winningTeamKillsPerDeath += Math.Round((decimal)player.TotalKills, 2);
                 winningTeamTotalAssassinations += player.TotalAssassinations;
                 winningTeamTotalGrenadeKills += player.TotalGrenadeKills;
                 winningTeamTotalGroundPoundKills += player.TotalGroundPoundKills;
@@ -560,20 +572,23 @@
         }
 
         @{
-            winningTeamKillsPerDeath = Math.Round((decimal)winningTeamKillsPerDeath / winningTeamTotalKills);
-            winningTeamKillsPerMinute = Math.Round((double)winningTeamTotalKills / winningTeamTotalTimePlayed);
+            winningTeamKillsPerDeath = (decimal)winningTeamTotalKills / winningTeamTotalDeaths;
+            winningTeamKillsPerMinute = winningTeamTotalKills / winningTeamTotalTimePlayed;
         }
 
     <tr>
         <td align="center">@winningTeamName(winningTeamId)</td>
         <td>@winningTeamTotalKills</td>
+        <td>@winningTeamTotalDeaths</td>
+        <td>@winningTeamTotalAssists</td>
+        <td>@winningTeamKDA.ToString("F2")</td>
         <td>@winningTeamKillsPerDeath.ToString("F2")</td>
         <td>@winningTeamKillsPerMinute.ToString("F2")</td>
         <td>@winningTeamTotalAssassinations</td>
         <td>@winningTeamTotalGrenadeKills</td>
         <td>@winningTeamTotalGroundPoundKills</td>
-        <td>@winningTeamTotalPowerWeaponKills</td>
         <td>@winningTeamTotalMeleeKills</td>
+        <td>@winningTeamTotalPowerWeaponKills</td>
         <td>@winningTeamTotalShoulderBashKills</td>
         <td>@winningTeamTotalWeaponKills</td>
     </tr>
@@ -594,41 +609,50 @@
         }
 
         @{
-            losingTeamKillsPerDeath = Math.Round((decimal)losingTeamTotalDeaths / losingTeamTotalKills, 2);
-            losingTeamKillsPerMinute = Math.Round((double)losingTeamTotalKills / losingTeamTotalTimePlayed, 2);
+            losingTeamKillsPerDeath = (decimal)losingTeamTotalKills / losingTeamTotalDeaths;
+            losingTeamKillsPerMinute = losingTeamTotalKills / losingTeamTotalTimePlayed;
         }
 
     <tr>
         <td align="center">@losingTeamName(winningTeamId)</td>
         <td>@losingTeamTotalKills</td>
+        <td>@losingTeamTotalDeaths</td>
+        <td>@losingTeamTotalAssists</td>
+        <td>@losingTeamKDA.ToString("F2")</td>
         <td>@losingTeamKillsPerDeath.ToString("F2")</td>
         <td>@losingTeamKillsPerMinute.ToString("F2")</td>
         <td>@losingTeamTotalAssassinations</td>
         <td>@losingTeamTotalGrenadeKills</td>
         <td>@losingTeamTotalGroundPoundKills</td>
-        <td>@losingTeamTotalPowerWeaponKills</td>
         <td>@losingTeamTotalMeleeKills</td>
+        <td>@losingTeamTotalPowerWeaponKills</td>
         <td>@losingTeamTotalShoulderBashKills</td>
         <td>@losingTeamTotalWeaponKills</td>
     </tr>
 
         @foreach (var player in sortedPlayersByKills) //Losing Team Kills Stats
         {
+
+            decimal killsDeathsAssists = (player.TotalKills + (decimal)(player.TotalAssists / 3)) / (decimal)player.TotalDeaths;
+
             if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
             {
-                <tr>
-                    <td>@player.Player.Gamertag</td>
-                    <td>@player.TotalKills</td>
-                    <td>@killsPerDeath(player).ToString("F2")</td>
-                    <td>@Math.Round((double)player.TotalKills / player.TotalTimePlayed.TotalMinutes).ToString("F2")</td>
-                    <td>@player.TotalAssassinations</td>
-                    <td>@player.TotalGrenadeKills</td>
-                    <td>@player.TotalGroundPoundKills</td>
-                    <td>@player.TotalPowerWeaponKills</td>
-                    <td>@player.TotalMeleeKills</td>
-                    <td>@player.TotalShoulderBashKills</td>
-                    <td>@totalWeaponKills(player)</td>
-                </tr>
+    <tr>
+        <td>@player.Player.Gamertag</td>
+        <td>@player.TotalKills</td>
+        <td>@player.TotalDeaths</td>
+        <td>@player.TotalAssists</td>
+        <td>@killsDeathsAssists.ToString("F2")</td>
+        <td>@killsPerDeath(player).ToString("F2")</td>
+        <td>@((player.TotalKills / player.TotalTimePlayed.TotalMinutes).ToString("F2"))</td>
+        <td>@player.TotalAssassinations</td>
+        <td>@player.TotalGrenadeKills</td>
+        <td>@player.TotalGroundPoundKills</td>
+        <td>@player.TotalMeleeKills</td>
+        <td>@player.TotalPowerWeaponKills</td>
+        <td>@player.TotalShoulderBashKills</td>
+        <td>@totalWeaponKills(player)</td>
+    </tr>
             }
         }
     </table>
