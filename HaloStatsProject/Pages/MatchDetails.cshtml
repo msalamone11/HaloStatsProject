@@ -1,10 +1,12 @@
 ﻿@page
 @model MatchDetailsModel
 @using HaloEzAPI.Model.Response.Stats.Halo5.Arena;
-@using HaloEzAPI.Model.Response.MetaData;
-@{
-    ViewData["Title"] = "Match Details";
 
+@{
+    // ViewData["Title"] = "Match Details";
+
+    ViewData["Title"] = Model.GameTypeName.Name;
+    string gameTypeName = Model.GameTypeName.Name;
 
     int currentCSR(ArenaPlayerStat player)
     {
@@ -14,33 +16,29 @@
         {
             currentCSR = 0;
         }
-        else if (player.CurrentCsr.Tier == 1 && player.CurrentCsr.Csr != 0)
+        else if (player.CurrentCsr.Tier == 1 && player.CurrentCsr.Csr != 0) //Onyx to Champ
         {
             currentCSR = player.CurrentCsr.Csr;
         }
-        else if (player.CurrentCsr.Tier == 6)
+        else if (player.CurrentCsr.DesignationId == 5) //Diamond
         {
-            currentCSR = 1450 + (player.CurrentCsr.PercentToNextTier) / 2;
+            currentCSR = 1150 + (player.CurrentCsr.Tier * 50) + ((player.CurrentCsr.PercentToNextTier) / 2);
         }
-        else if (player.CurrentCsr.Tier == 5)
+        else if (player.CurrentCsr.DesignationId == 4) //Platinum
         {
-            currentCSR = 1400 + (player.CurrentCsr.PercentToNextTier) / 2;
+            currentCSR = 850 + (player.CurrentCsr.Tier * 50) + ((player.CurrentCsr.PercentToNextTier) / 2);
         }
-        else if (player.CurrentCsr.Tier == 4)
+        else if (player.CurrentCsr.DesignationId == 3) //Gold
         {
-            currentCSR = 1350 + (player.CurrentCsr.PercentToNextTier) / 2;
+            currentCSR = 550 + (player.CurrentCsr.Tier * 50) + ((player.CurrentCsr.PercentToNextTier) / 2);
         }
-        else if (player.CurrentCsr.Tier == 3)
+        else if (player.CurrentCsr.DesignationId == 2) //Silver
         {
-            currentCSR = 1300 + (player.CurrentCsr.PercentToNextTier) / 2;
+            currentCSR = 250 + (player.CurrentCsr.Tier * 50) + ((player.CurrentCsr.PercentToNextTier) / 2);
         }
-        else if (player.CurrentCsr.Tier == 2)
+        else if (player.CurrentCsr.DesignationId == 1) //Bronze
         {
-            currentCSR = 1250 + (player.CurrentCsr.PercentToNextTier) / 2;
-        }
-        else if (player.CurrentCsr.Tier == 1)
-        {
-            currentCSR = 1200 + (player.CurrentCsr.PercentToNextTier) / 2;
+            currentCSR = ((player.CurrentCsr.Tier * 50) - 50) + ((player.CurrentCsr.PercentToNextTier) / 2);
         }
         else
         {
@@ -56,7 +54,7 @@
 
     string losingTeamName(int winningTeamId)
     {
-        @if (winningTeamId == 0)
+        if (winningTeamId == 0)
         {
             return "Red";
         }
@@ -78,33 +76,29 @@
         {
             previousCSR = 0;
         }
-        else if (player.PreviousCsr.Tier == 1 && player.PreviousCsr.Csr != 0)
+        else if (player.PreviousCsr.DesignationId == 1 && player.PreviousCsr.Csr != 0)
         {
             previousCSR = player.PreviousCsr.Csr;
         }
-        else if (player.PreviousCsr.Tier == 6)
+        else if (player.PreviousCsr.DesignationId == 5)
         {
-            previousCSR = 1450 + (player.PreviousCsr.PercentToNextTier) / 2;
+            previousCSR = 1150 + (player.PreviousCsr.Tier * 50) + ((player.PreviousCsr.PercentToNextTier) / 2);
         }
-        else if (player.PreviousCsr.Tier == 5)
+        else if (player.PreviousCsr.DesignationId == 4)
         {
-            previousCSR = 1400 + (player.PreviousCsr.PercentToNextTier) / 2;
+            previousCSR = 850 + (player.PreviousCsr.Tier * 50) + ((player.PreviousCsr.PercentToNextTier) / 2);
         }
-        else if (player.PreviousCsr.Tier == 4)
+        else if (player.PreviousCsr.DesignationId == 3)
         {
-            previousCSR = 1350 + (player.PreviousCsr.PercentToNextTier) / 2;
+            previousCSR = 550 + (player.PreviousCsr.Tier * 50) + ((player.PreviousCsr.PercentToNextTier) / 2);
         }
-        else if (player.PreviousCsr.Tier == 3)
+        else if (player.PreviousCsr.DesignationId == 2)
         {
-            previousCSR = 1300 + (player.PreviousCsr.PercentToNextTier) / 2;
+            previousCSR = 250 + (player.PreviousCsr.Tier * 50) + ((player.PreviousCsr.PercentToNextTier) / 2);
         }
-        else if (player.PreviousCsr.Tier == 2)
+        else if (player.PreviousCsr.DesignationId == 1)
         {
-            previousCSR = 1250 + (player.PreviousCsr.PercentToNextTier) / 2;
-        }
-        else if (player.PreviousCsr.Tier == 1)
-        {
-            previousCSR = 1200 + (player.PreviousCsr.PercentToNextTier) / 2;
+            previousCSR = ((player.PreviousCsr.Tier * 50) - 50) + ((player.PreviousCsr.PercentToNextTier) / 2);
         }
         else
         {
@@ -236,7 +230,7 @@
 </div>
 
 <div class="text-center">
-    <h1 class="display-4">Match Details</h1>
+    <h1 class="display-4">@ViewData["Title"]</h1>
 </div>
 
 <br />
@@ -308,21 +302,21 @@
             decimal winningTeamKDA = ((winningTeamTotalKills + (winningTeamTotalAssists / 3)) / (decimal)winningTeamTotalDeaths);
         }
 
-    <tr>
-        <td align="center">@winningTeamName(winningTeamId)</td>
-        <td>@winningTeamTotalKills</td>
-        <td>@winningTeamTotalDeaths</td>
-        <td>@winningTeamTotalAssists</td>
-        <td>@winningTeamKDA.ToString("F2")</td>
-        <td>@winningTeamTotalShotsFired</td>
-        <td>@winningTeamTotalShotsLanded</td>
-        <td>@winningTeamAccuracy.ToString("F2")%</td>
-        <td>@winningTeamTotalPowerWeaponGrabs</td>
-        <td>@winningTeamTotalHeadshots</td>
-        <td title="Team Previous CSR Average">@(winningTeamTotalPreviousCsr / winningTeamTotalPlayers)</td>
-        <td title="Team Postmatch CSR Average">@(winningTeamTotalCurrentCsr / winningTeamTotalPlayers)</td>
-        <td>@winningTeamTotalCsrDifferencePostMatch</td>
-    </tr>
+        <tr>
+            <td align="center">@winningTeamName(winningTeamId)</td>
+            <td>@winningTeamTotalKills</td>
+            <td>@winningTeamTotalDeaths</td>
+            <td>@winningTeamTotalAssists</td>
+            <td>@winningTeamKDA.ToString("F2")</td>
+            <td>@winningTeamTotalShotsFired</td>
+            <td>@winningTeamTotalShotsLanded</td>
+            <td>@winningTeamAccuracy.ToString("F2")%</td>
+            <td>@winningTeamTotalPowerWeaponGrabs</td>
+            <td>@winningTeamTotalHeadshots</td>
+            <td title="Team Previous CSR Average">@(winningTeamTotalPreviousCsr / winningTeamTotalPlayers)</td>
+            <td title="Team Postmatch CSR Average">@(winningTeamTotalCurrentCsr / winningTeamTotalPlayers)</td>
+            <td>@winningTeamTotalCsrDifferencePostMatch</td>
+        </tr>
 
         @foreach (var player in sortedPlayersByKills) //Losing Team Basic Stats
         {
@@ -520,7 +514,6 @@
     <table width="100%">
 
         <tr>
-
             <th>Gamer Tag</th>
             <th title="Kills">K.</th>
             <th title="Deaths">D.</th>
@@ -576,22 +569,22 @@
             winningTeamKillsPerMinute = winningTeamTotalKills / winningTeamTotalTimePlayed;
         }
 
-    <tr>
-        <td align="center">@winningTeamName(winningTeamId)</td>
-        <td>@winningTeamTotalKills</td>
-        <td>@winningTeamTotalDeaths</td>
-        <td>@winningTeamTotalAssists</td>
-        <td>@winningTeamKDA.ToString("F2")</td>
-        <td>@winningTeamKillsPerDeath.ToString("F2")</td>
-        <td>@winningTeamKillsPerMinute.ToString("F2")</td>
-        <td>@winningTeamTotalAssassinations</td>
-        <td>@winningTeamTotalGrenadeKills</td>
-        <td>@winningTeamTotalGroundPoundKills</td>
-        <td>@winningTeamTotalMeleeKills</td>
-        <td>@winningTeamTotalPowerWeaponKills</td>
-        <td>@winningTeamTotalShoulderBashKills</td>
-        <td>@winningTeamTotalWeaponKills</td>
-    </tr>
+        <tr>
+            <td align="center">@winningTeamName(winningTeamId)</td>
+            <td>@winningTeamTotalKills</td>
+            <td>@winningTeamTotalDeaths</td>
+            <td>@winningTeamTotalAssists</td>
+            <td>@winningTeamKDA.ToString("F2")</td>
+            <td>@winningTeamKillsPerDeath.ToString("F2")</td>
+            <td>@winningTeamKillsPerMinute.ToString("F2")</td>
+            <td>@winningTeamTotalAssassinations</td>
+            <td>@winningTeamTotalGrenadeKills</td>
+            <td>@winningTeamTotalGroundPoundKills</td>
+            <td>@winningTeamTotalMeleeKills</td>
+            <td>@winningTeamTotalPowerWeaponKills</td>
+            <td>@winningTeamTotalShoulderBashKills</td>
+            <td>@winningTeamTotalWeaponKills</td>
+        </tr>
 
         @foreach (var player in sortedPlayersByKills) //Losing Team Kills Stats
         {
@@ -604,7 +597,7 @@
                 losingTeamTotalMeleeKills += player.TotalMeleeKills;
                 losingTeamTotalShoulderBashKills += player.TotalShoulderBashKills;
                 losingTeamTotalWeaponKills += totalWeaponKills(player);
-                
+
             }
         }
 
@@ -613,22 +606,22 @@
             losingTeamKillsPerMinute = losingTeamTotalKills / losingTeamTotalTimePlayed;
         }
 
-    <tr>
-        <td align="center">@losingTeamName(winningTeamId)</td>
-        <td>@losingTeamTotalKills</td>
-        <td>@losingTeamTotalDeaths</td>
-        <td>@losingTeamTotalAssists</td>
-        <td>@losingTeamKDA.ToString("F2")</td>
-        <td>@losingTeamKillsPerDeath.ToString("F2")</td>
-        <td>@losingTeamKillsPerMinute.ToString("F2")</td>
-        <td>@losingTeamTotalAssassinations</td>
-        <td>@losingTeamTotalGrenadeKills</td>
-        <td>@losingTeamTotalGroundPoundKills</td>
-        <td>@losingTeamTotalMeleeKills</td>
-        <td>@losingTeamTotalPowerWeaponKills</td>
-        <td>@losingTeamTotalShoulderBashKills</td>
-        <td>@losingTeamTotalWeaponKills</td>
-    </tr>
+        <tr>
+            <td align="center">@losingTeamName(winningTeamId)</td>
+            <td>@losingTeamTotalKills</td>
+            <td>@losingTeamTotalDeaths</td>
+            <td>@losingTeamTotalAssists</td>
+            <td>@losingTeamKDA.ToString("F2")</td>
+            <td>@losingTeamKillsPerDeath.ToString("F2")</td>
+            <td>@losingTeamKillsPerMinute.ToString("F2")</td>
+            <td>@losingTeamTotalAssassinations</td>
+            <td>@losingTeamTotalGrenadeKills</td>
+            <td>@losingTeamTotalGroundPoundKills</td>
+            <td>@losingTeamTotalMeleeKills</td>
+            <td>@losingTeamTotalPowerWeaponKills</td>
+            <td>@losingTeamTotalShoulderBashKills</td>
+            <td>@losingTeamTotalWeaponKills</td>
+        </tr>
 
         @foreach (var player in sortedPlayersByKills) //Losing Team Kills Stats
         {
@@ -637,77 +630,143 @@
 
             if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
             {
-    <tr>
-        <td>@player.Player.Gamertag</td>
-        <td>@player.TotalKills</td>
-        <td>@player.TotalDeaths</td>
-        <td>@player.TotalAssists</td>
-        <td>@killsDeathsAssists.ToString("F2")</td>
-        <td>@killsPerDeath(player).ToString("F2")</td>
-        <td>@((player.TotalKills / player.TotalTimePlayed.TotalMinutes).ToString("F2"))</td>
-        <td>@player.TotalAssassinations</td>
-        <td>@player.TotalGrenadeKills</td>
-        <td>@player.TotalGroundPoundKills</td>
-        <td>@player.TotalMeleeKills</td>
-        <td>@player.TotalPowerWeaponKills</td>
-        <td>@player.TotalShoulderBashKills</td>
-        <td>@totalWeaponKills(player)</td>
-    </tr>
-            }
-        }
-    </table>
-    <br />
-</div>
-
-<div>
-    <h2>Objective</h2><br />
-</div>
-
-<div>
-    <table width="100%">
-
-        @{
-            //TODO need an 'if statement' here that will show a different table based on the GametypeVariant.
-        }
-
-        <tr>
-
-            <th>Gamer Tag</th>
-            <th title="Captured">Total</th>
-            <th title="Defended">K/D</th>
-            <th title="Secured">K/M</th>
-            <th title="Total Control">As.</th>
-            <th title="Assist">Gr.</th>
-            <th title="Spree">G.P.</th>
-            <th title="Lockdown">P.W.</th>
-        </tr>
-
-        @foreach (var player in sortedPlayersByKills) //Winning Team Objective Stats
-        {
-            //TODO Instead of using sortedPlayersByKills, we are going to need sortedPlayersBySumOfStrongholds. (sumOfStrongholds = Captured + Defended + Secured)
-
-            if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
-            {
                 <tr>
                     <td>@player.Player.Gamertag</td>
-                    <td>@currentCSR(player)</td>
-                </tr>
-            }
-        }
-
-        @foreach (var player in sortedPlayersByKills) //Losing Team Objective Stats
-        {
-            if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
-            {
-                <tr>
-                    <td>@player.Player.Gamertag</td>
-                    <td>@currentCSR(player)</td>
+                    <td>@player.TotalKills</td>
+                    <td>@player.TotalDeaths</td>
+                    <td>@player.TotalAssists</td>
+                    <td>@killsDeathsAssists.ToString("F2")</td>
+                    <td>@killsPerDeath(player).ToString("F2")</td>
+                    <td>@((player.TotalKills / player.TotalTimePlayed.TotalMinutes).ToString("F2"))</td>
+                    <td>@player.TotalAssassinations</td>
+                    <td>@player.TotalGrenadeKills</td>
+                    <td>@player.TotalGroundPoundKills</td>
+                    <td>@player.TotalMeleeKills</td>
+                    <td>@player.TotalPowerWeaponKills</td>
+                    <td>@player.TotalShoulderBashKills</td>
+                    <td>@totalWeaponKills(player)</td>
                 </tr>
             }
         }
     </table>
     <br />
 </div>
+
+@switch (gameTypeName)
+{
+    default:
+    break;
+
+    case "Slayer HCS":
+    break;
+
+    case "CTF HCS":
+        @:
+        <div>
+            <h2>Objective: @gameTypeName</h2><br />
+        </div>
+        <div>
+            <table width="100%">
+                <tr>
+                    <th>Gamer Tag</th>
+                    <th title="Flags Captured">Captures</th>
+                    <th title="Flags Defended">Defense</th>
+                    <th title="Flags Assisted">Assists</th>
+                    <th title="Flag Carrier Kills">C. Kills</th>
+                    <th title="Flag Carriers Protected">C. Protected</th>
+                    <th title="Flag Kills">F. Kills</th>
+                    <th title="Flag Pulls">F. Pulls</th>
+                    <th title="Flag Returns">F. Returns</th>
+                </tr>
+
+                @foreach (var player in sortedPlayersByKills) //Winning Team Objective Stats
+                {
+                    //TODO Instead of using sortedPlayersByKills, we are going to need sortedPlayersBySumOfStrongholds. (sumOfStrongholds = Captured + Defended + Secured)
+
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                        </tr>
+                    }
+                }
+
+                <tr>
+                    <td align="center">@winningTeamName(winningTeamId)</td>
+                </tr>
+
+                <tr>
+                    <td align="center">@losingTeamName(winningTeamId)</td>
+                </tr>
+
+                @foreach (var player in sortedPlayersByKills) //Losing Team Objective Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                        </tr>
+                    }
+                }
+            </table>
+            <br />
+        </div>
+    break;
+
+    case "Strongholds HCS":
+        @:
+        <div>
+            <h2>Objective: @gameTypeName</h2><br />
+        </div>
+        <div>
+            <table width="100%">
+                <tr>
+                    <th>Gamer Tag</th>
+                    <th title="Strongholds Captured + Defended + Secured">Total</th>
+                    <th title="Strongholds Captured">Captured</th>
+                    <th title="Strongholds Defended">Defended</th>
+                    <th title="Strongholds Secured">Secured</th>
+                    <th title="Stronghold Assisted Captures">Assisted</th>
+                    <th title="Stronghold Capture Sprees">C. Sprees</th>
+                    <th title="Stronghold Total Controls">T. Controls</th>
+                </tr>
+                @foreach (var player in sortedPlayersByKills) //Winning Team Objective Stats
+                {
+                    //TODO Instead of using sortedPlayersByKills, we are going to need sortedPlayersBySumOfStrongholds. (sumOfStrongholds = Captured + Defended + Secured)
+
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                        </tr>
+                    }
+                }
+
+                <tr>
+                    <td align="center">@winningTeamName(winningTeamId)</td>
+                </tr>
+
+                <tr>
+                    <td align="center">@losingTeamName(winningTeamId)</td>
+                </tr>
+
+                @foreach (var player in sortedPlayersByKills) //Losing Team Objective Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                        </tr>
+                    }
+                }
+            </table>
+            <br />
+        </div>
+        break;
+
+        case "Oddball HCS":
+        break;
+}
 
 @{
     /* TODO Need to add in an Objectives table for if the game is a Strongholds or CTF gametype.

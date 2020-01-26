@@ -1,71 +1,79 @@
 ﻿@page
 @model UserModel
-@{
-}
-
 @using HaloEzAPI.Model.Response.Stats.Halo5;
 @using HaloEzAPI.Model.Response.MetaData.Halo5;
 @using Variables;
+@using HaloStatsProject.Pages;
+
+@{
+}
 
 <div class="container">
-  <div class="row">
-    <div class="col-sm">
-        <div style="background-color:lightgrey;">
-        Last Games for @Model.GamerTag
-        </div>
-        <div>
-            <label for="Arena">Arena</label>
-        <input type="radio" value="Arena" selected>
-        <label for="Custom Games">Custom Games</label>
-        <input type="radio" value="Custom Games">
-        </div>
+    <div class="row">
+        <div class="col-sm">
+            <div style="background-color:lightgrey;">
+                Last Games for @Model.GamerTag
+            </div>
+            <div>
+                <label for="Arena">Arena</label>
+                <input type="radio" value="Arena" selected>
+                <label for="Custom Games">Custom Games</label>
+                <input type="radio" value="Custom Games">
+            </div>
 
             @foreach (var match in Model.Matches.Results)
-        {
-            <div>
+            {
+                <div>
 
-                @foreach (MatchPlayer player in @match.Players)
-                {
-                    string mapId = Model.Maps.Where(map => map.Id == match.MapId).First().Name;
-                    double KillDeathsRatio = new GetKillDeathRatio(player).ratio; // double result = (double)a / b;
+                    @foreach (MatchPlayer player in match.Players)
+                    {
+                        string mapId = Model.Maps.Where(map => map.Id == match.MapId).First().Name;
+                        double KillDeathsRatio = new GetKillDeathRatio(player).ratio; // double result = (double)a / b;
 
-                    if (mapId == null){mapId = "Unknown";}
+                        if (mapId == null) { mapId = "Unknown"; }
 
-                    @player.Result @player.Rank
+                        string gameTypeName = ""; //TODO Have to get the gameTypeName here.
 
-                    <div>
-                        <a href="/MatchDetails?matchId=@match.Id.MatchId">@mapId</a>
-                        K/D: @KillDeathsRatio
-                    </div>
-                    <div>
-                        Kills: @player.TotalKills
-                        Assists: @player.TotalAssists
-                        Deaths: @player.TotalDeaths
-                    </div>
-                    <br />
-                }
-            </div>
-        }
-    </div>
-    <div class="col-sm">
-    <div class="col">
+                        if (mapId == "Unknown" && gameTypeName == "CTF Time Return HCS")
+                        {
+                            mapId = "Refuge HCS";
+                        }
 
-<div style="background-color:lightgrey;">
-        HCS Season ID / GameType / Map ID
+                        @player.Result @player.Rank
+
+                        <div>
+                            <a href="/MatchDetails?matchId=@match.Id.MatchId">@mapId</a>
+                            K/D: @KillDeathsRatio
+                        </div>
+                        <div>
+                            Kills: @player.TotalKills
+                            Assists: @player.TotalAssists
+                            Deaths: @player.TotalDeaths
+                        </div>
+                        <br />
+                    }
+                </div>
+            }
         </div>
-        @foreach (var match in Model.Matches.Results)
-        {
-            
-            <div>
+        <div class="col-sm">
+            <div class="col">
 
-                @foreach (MatchPlayer player in @match.Players)
+                <div style="background-color:lightgrey;">
+                    HCS Season ID / GameType / Map ID
+                </div>
+                @foreach (var match in Model.Matches.Results)
                 {
-                    <span>Use latest match endpoint instead</span>
-                    @player.Player.Gamertag
+
+                    <div>
+
+                        @foreach (MatchPlayer player in @match.Players)
+                        {
+                            <span>Use latest match endpoint instead</span>
+                            @player.Player.Gamertag
+                        }
+                    </div>
                 }
             </div>
-        }
+        </div>
     </div>
-</div>
-</div>
 </div>

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HaloEzAPI;
 using HaloEzAPI.Model.Response.MetaData.Halo5;
 using HaloEzAPI.Model.Response.Stats.Halo5;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using HaloEzAPI.Model.Response.Stats.Halo5.Arena;
 
 namespace HaloStatsProject.Pages
 {
@@ -17,6 +19,7 @@ namespace HaloStatsProject.Pages
         public IEnumerable<Season> SeasonIdName { get; private set; }
         public IEnumerable<GameBaseVariant> GameType { get; private set; }
         public string GamerTag { get; private set; }
+        public GameVariant GameTypeName;
 
         public UserModel (ILogger<UserModel> logger) {
             _logger = logger;
