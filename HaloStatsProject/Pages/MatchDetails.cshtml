@@ -679,7 +679,7 @@
                     <th title="Flag Returns">F. Returns</th>
                 </tr>
 
-                @foreach (var player in sortedPlayersByKills) //Winning Team Objective Stats
+                @foreach (var player in sortedPlayersByKills) //Winning Team CTF Stats
                 {
                     //TODO Instead of using sortedPlayersByKills, we are going to need sortedPlayersBySumOfStrongholds. (sumOfStrongholds = Captured + Defended + Secured)
 
@@ -687,9 +687,17 @@
                     {
                         <tr>
                             <td>@player.Player.Gamertag</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2944278681).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 164204247).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1494478183).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2299858338).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 352859864).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 3514632335).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1039658009).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1063951891).FirstOrDefault()?.Count ?? 0)</td>
                         </tr>
                     }
-                }
+                    }
 
                 <tr>
                     <td align="center">@winningTeamName(winningTeamId)</td>
@@ -701,20 +709,28 @@
 
                 @foreach (var player in sortedPlayersByKills) //Losing Team Objective Stats
                 {
-                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
-                    {
+                        if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                        {
                         <tr>
                             <td>@player.Player.Gamertag</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2944278681).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 164204247).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1494478183).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2299858338).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 352859864).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 3514632335).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1039658009).FirstOrDefault()?.Count ?? 0)</td>
+                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1063951891).FirstOrDefault()?.Count ?? 0)</td>
                         </tr>
+                                    }
                     }
-                }
             </table>
             <br />
         </div>
     break;
 
-    case "Strongholds HCS":
-        @:
+                case "Strongholds HCS":
+@:
         <div>
             <h2>Objective: @gameTypeName</h2><br />
         </div>

@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HaloEzAPI;
+using HaloEzAPI.Abstraction.Enum.Halo5;
 using HaloEzAPI.Model.Response.MetaData.Halo5;
+using HaloEzAPI.Model.Response.Stats.Halo5;
 using HaloEzAPI.Model.Response.Stats.Halo5.Arena;
+using HaloStatsProject.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MedalAward = HaloStatsProject.Models.MedalAward;
 
 namespace HaloStatsProject.Pages
 {
@@ -14,6 +19,10 @@ namespace HaloStatsProject.Pages
 
         public GameVariant GameTypeName;
 
+        public IEnumerable<Impulse> Impulses { get; set; }
+
+        public IEnumerable<Medal> MedalAwards { get; set; }
+
         public async Task OnGetAsync(string matchId)
         {
             MatchId = matchId;
@@ -23,6 +32,10 @@ namespace HaloStatsProject.Pages
             PlayerStats = await haloApiService.GetArenaPostGameCarnageReport(Guid.Parse(matchId));
 
             GameTypeName = await haloApiService.GetGameVariant(PlayerStats.GameVariantResourceId.ResourceId.ToString());
-        }
+
+            Impulses = await haloApiService.GetImpulses();
+
+            MedalAwards = await haloApiService.GetMedals();
+    }
     }
 }
