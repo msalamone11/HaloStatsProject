@@ -76,7 +76,7 @@
         {
             previousCSR = 0;
         }
-        else if (player.PreviousCsr.DesignationId == 1 && player.PreviousCsr.Csr != 0)
+        else if (player.PreviousCsr.Tier == 1 && player.PreviousCsr.Csr != 0)
         {
             previousCSR = player.PreviousCsr.Csr;
         }
@@ -190,7 +190,7 @@
     double losingTeamTotalShoulderBashKills = 0;
     double losingTeamTotalWeaponKills = 0;
 
-    int winningTeamId = 0; //TODO Why will int not let me just let me not assign this a value. Doesn't work unless I do so I just set it to 0.
+    int winningTeamId = 0;
 
     foreach (var player in sortedPlayersByKills) //Get the winningTeamId. How can we get this without a foreach loop?
     {
@@ -654,83 +654,8 @@
 
 @switch (gameTypeName)
 {
-    default:
-    break;
-
-    case "Slayer HCS":
-    break;
-
     case "CTF HCS":
         @:
-        <div>
-            <h2>Objective: @gameTypeName</h2><br />
-        </div>
-        <div>
-            <table width="100%">
-                <tr>
-                    <th>Gamer Tag</th>
-                    <th title="Flags Captured">Captures</th>
-                    <th title="Flags Defended">Defense</th>
-                    <th title="Flags Assisted">Assists</th>
-                    <th title="Flag Carrier Kills">C. Kills</th>
-                    <th title="Flag Carriers Protected">C. Protected</th>
-                    <th title="Flag Kills">F. Kills</th>
-                    <th title="Flag Pulls">F. Pulls</th>
-                    <th title="Flag Returns">F. Returns</th>
-                </tr>
-
-                @foreach (var player in sortedPlayersByKills) //Winning Team CTF Stats
-                {
-                    //TODO Instead of using sortedPlayersByKills, we are going to need sortedPlayersBySumOfStrongholds. (sumOfStrongholds = Captured + Defended + Secured)
-
-                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
-                    {
-                        <tr>
-                            <td>@player.Player.Gamertag</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2944278681).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 164204247).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1494478183).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2299858338).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 352859864).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 3514632335).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1039658009).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1063951891).FirstOrDefault()?.Count ?? 0)</td>
-                        </tr>
-                    }
-                    }
-
-                <tr>
-                    <td align="center">@winningTeamName(winningTeamId)</td>
-                </tr>
-
-                <tr>
-                    <td align="center">@losingTeamName(winningTeamId)</td>
-                </tr>
-
-                @foreach (var player in sortedPlayersByKills) //Losing Team Objective Stats
-                {
-                        if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
-                        {
-                        <tr>
-                            <td>@player.Player.Gamertag</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2944278681).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 164204247).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1494478183).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 2299858338).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 352859864).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 3514632335).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1039658009).FirstOrDefault()?.Count ?? 0)</td>
-                            <td>@(player.Impulses.Where(Impulse => Impulse.Id == 1063951891).FirstOrDefault()?.Count ?? 0)</td>
-                        </tr>
-                                    }
-                    }
-            </table>
-            <br />
-        </div>
-    break;
-
-                case "Strongholds HCS":
-@:
         <div>
             <h2>Objective: @gameTypeName</h2><br />
         </div>
@@ -746,32 +671,146 @@
                     <th title="Stronghold Capture Sprees">C. Sprees</th>
                     <th title="Stronghold Total Controls">T. Controls</th>
                 </tr>
-                @foreach (var player in sortedPlayersByKills) //Winning Team Objective Stats
+
+                @{
+                    int flagsCaptured(ArenaPlayerStat player) { return player.Impulses.Where(Impulse => Impulse.Id == 2944278681).FirstOrDefault()?.Count ?? 0; }
+                    int flagsDefended(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 164204247).FirstOrDefault()?.Count ?? 0; }
+                    int flagsAssisted(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1494478183).FirstOrDefault()?.Count ?? 0; }
+                    int flagCarrierKills(ArenaPlayerStat player) { return player.Impulses.Where(Impulse => Impulse.Id == 2299858338).FirstOrDefault()?.Count ?? 0; }
+                    int flagCarriersProtected(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1957561936).FirstOrDefault()?.Count ?? 0; }
+                    int flagKills(ArenaPlayerStat player) { return player.Impulses.Where(Impulse => Impulse.Id == 3514632335).FirstOrDefault()?.Count ?? 0; }
+                    int flagPulls(ArenaPlayerStat player) { return player.Impulses.Where(Impulse => Impulse.Id == 1039658009).FirstOrDefault()?.Count ?? 0; }
+                    int flagReturns(ArenaPlayerStat player) { return player.Impulses.Where(Impulse => Impulse.Id == 1063951891).FirstOrDefault()?.Count ?? 0; }
+
+                    int winningTeamFlagsCaptured = 0;
+                    int winningTeamFlagsAssisted = 0;
+                    int winningTeamFlagCarrierKills = 0;
+                    int winningTeamFlagCarriersProtected = 0;
+                    int winningTeamFlagsDefended = 0;
+                    int winningTeamFlagKills = 0;
+                    int winningTeamFlagPulls = 0;
+                    int winningTeamFlagReturns = 0;
+
+                    int losingTeamFlagsCaptured = 0;
+                    int losingTeamFlagsAssisted = 0;
+                    int losingTeamFlagCarrierKills = 0;
+                    int losingTeamFlagCarriersProtected = 0;
+                    int losingTeamFlagsDefended = 0;
+                    int losingTeamFlagKills = 0;
+                    int losingTeamFlagPulls = 0;
+                    int losingTeamFlagReturns = 0;
+
+                    var sortedPlayersByFlagObjective = @Model.PlayerStats.PlayerStats.OrderByDescending(player => player.Rank).OrderByDescending(player => (flagsCaptured(player) + flagsDefended(player) + flagsAssisted(player) + flagCarrierKills(player) +
+                                                                                                                                                            flagCarriersProtected(player) + flagKills(player) + flagPulls(player) + flagReturns(player)));
+
+                }
+
+                @foreach (var player in sortedPlayersByFlagObjective) //Winning Team CTF Stats
                 {
-                    //TODO Instead of using sortedPlayersByKills, we are going to need sortedPlayersBySumOfStrongholds. (sumOfStrongholds = Captured + Defended + Secured)
+                    //TODO Instead of using sortedPlayersByKills, we are going to need winningTeamTotalFlagObjectiveStats.
 
                     if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
                     {
                         <tr>
                             <td>@player.Player.Gamertag</td>
+                            <td>
+                                @(flagsCaptured(player) + flagsDefended(player) + flagsAssisted(player) + flagCarrierKills(player) +
+                                                                                    flagCarriersProtected(player) + flagKills(player) + flagPulls(player) + flagReturns(player))
+                            </td>
+                            <td>@flagsAssisted(player)</td>
+                            <td>@flagsCaptured(player)</td>
+                            <td>@flagCarrierKills(player)</td>
+                            <td>@flagCarriersProtected(player)</td>
+                            <td>@flagsDefended(player)</td>
+                            <td>@flagKills(player)</td>
+                            <td>@flagPulls(player)</td>
+                            <td>@flagReturns(player)</td>
                         </tr>
+
+                        winningTeamFlagsCaptured += flagsCaptured(player);
+                        winningTeamFlagsAssisted += flagsAssisted(player);
+                        winningTeamFlagCarrierKills += flagCarrierKills(player);
+                        winningTeamFlagCarriersProtected += flagCarriersProtected(player);
+                        winningTeamFlagsDefended += flagsDefended(player);
+                        winningTeamFlagKills += flagKills(player);
+                        winningTeamFlagPulls += flagPulls(player);
+                        winningTeamFlagReturns += flagReturns(player);
                     }
+                }
+
+                @{
+                    int winningTeamTotalFlagObjectiveStats = winningTeamFlagsCaptured + winningTeamFlagsAssisted + winningTeamFlagCarrierKills +
+                                                             winningTeamFlagCarriersProtected + winningTeamFlagsDefended + winningTeamFlagKills +
+                                                             winningTeamFlagPulls + winningTeamFlagReturns;
                 }
 
                 <tr>
                     <td align="center">@winningTeamName(winningTeamId)</td>
+                    <td>@winningTeamTotalFlagObjectiveStats</td>
+                    <td>@winningTeamFlagsCaptured</td>
+                    <td>@winningTeamFlagsAssisted</td>
+                    <td>@winningTeamFlagCarrierKills</td>
+                    <td>@winningTeamFlagCarriersProtected</td>
+                    <td>@winningTeamFlagsDefended</td>
+                    <td>@winningTeamFlagKills</td>
+                    <td>@winningTeamFlagPulls</td>
+                    <td>@winningTeamFlagReturns</td>
                 </tr>
+
+                @foreach (var player in sortedPlayersByFlagObjective) //Losing Team CTF Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                    {
+                        losingTeamFlagsCaptured += flagsCaptured(player);
+                        losingTeamFlagsAssisted += flagsAssisted(player);
+                        losingTeamFlagCarrierKills += flagCarrierKills(player);
+                        losingTeamFlagCarriersProtected += flagCarriersProtected(player);
+                        losingTeamFlagsDefended += flagsDefended(player);
+                        losingTeamFlagKills += flagKills(player);
+                        losingTeamFlagPulls += flagPulls(player);
+                        losingTeamFlagReturns += flagReturns(player);
+                    }
+                }
+
+                @{
+                    int losingTeamTotalFlagObjectiveStats = losingTeamFlagsCaptured + losingTeamFlagsAssisted + losingTeamFlagCarrierKills +
+                                                             losingTeamFlagCarriersProtected + losingTeamFlagsDefended + losingTeamFlagKills +
+                                                             losingTeamFlagPulls + losingTeamFlagReturns;
+                }
 
                 <tr>
                     <td align="center">@losingTeamName(winningTeamId)</td>
+                    <td>@losingTeamTotalFlagObjectiveStats</td>
+                    <td>@losingTeamFlagsCaptured</td>
+                    <td>@losingTeamFlagsAssisted</td>
+                    <td>@losingTeamFlagCarrierKills</td>
+                    <td>@losingTeamFlagCarriersProtected</td>
+                    <td>@losingTeamFlagsDefended</td>
+                    <td>@losingTeamFlagKills</td>
+                    <td>@losingTeamFlagPulls</td>
+                    <td>@losingTeamFlagReturns</td>
                 </tr>
 
-                @foreach (var player in sortedPlayersByKills) //Losing Team Objective Stats
+                @foreach (var player in sortedPlayersByFlagObjective) //Losing Team CTF Stats
                 {
                     if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
                     {
                         <tr>
                             <td>@player.Player.Gamertag</td>
+                            <td>
+                                @(flagsCaptured(player) + flagsDefended(player) + flagsAssisted(player) + flagCarrierKills(player) +
+                                                                                flagCarriersProtected(player) + flagKills(player) + flagPulls(player) + flagReturns(player))
+                            </td>
+
+                            <td>@flagsAssisted(player)</td>
+                            <td>@flagsCaptured(player)</td>
+                            <td>@flagCarrierKills(player)</td>
+                            <td>@flagCarriersProtected(player)</td>
+                            <td>@flagsDefended(player)</td>
+                            <td>@flagKills(player)</td>
+                            <td>@flagPulls(player)</td>
+                            <td>@flagReturns(player)</td>
+
                         </tr>
                     }
                 }
@@ -780,7 +819,282 @@
         </div>
         break;
 
-        case "Oddball HCS":
+    case "Strongholds HCS":
+        @:
+        <div>
+            <h2>Objective: @gameTypeName</h2><br />
+        </div>
+        <div>
+            <table width="100%">
+                <tr>
+                    <th>Gamer Tag</th>
+                    <th title="Strongholds Captured + Defended + Secured">Total</th>
+                    <th title="Strongholds Captured">Caps</th>
+                    <th title="Strongholds Defended">Defense</th>
+                    <th title="Strongholds Secured">Secures</th>
+                    <th title="Stronghold Captures Assisted">C. Assists</th>
+                    <th title="Stronghold Capture Sprees">C. Sprees</th>
+                    <th title="Stronghold Lockdowns">Lockdowns</th>
+                    <th title="Stronghold Total Controls">T. Controls</th>
+                </tr>
+
+                @{
+                    int strongholdCaptures(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 3565443938).FirstOrDefault()?.Count ?? 0; }
+                    int strongholdDefense(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1351381581).FirstOrDefault()?.Count ?? 0; }
+                    int strongholdSecures(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 2916014239).FirstOrDefault()?.Count ?? 0; }
+                    int strongholdAssists(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1637841390).FirstOrDefault()?.Count ?? 0; }
+                    int strongholdCaptureSprees(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 3354395650).FirstOrDefault()?.Count ?? 0; }
+                    int strongholdLockdowns(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 2896365521).FirstOrDefault()?.Count ?? 0; }
+                    int strongholdTotalControls(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 2105198095).FirstOrDefault()?.Count ?? 0; }
+
+                    int winningTeamStrongholdCaptures = 0;
+                    int winningTeamStrongholdDefense = 0;
+                    int winningTeamStrongholdSecures = 0;
+                    int winningTeamStrongholdAssists = 0;
+                    int winningTeamStrongholdCaptureSprees = 0;
+                    int winningTeamStrongholdLockdowns = 0;
+                    int winningTeamStrongholdTotalControls = 0;
+
+                    int losingTeamStrongholdCaptures = 0;
+                    int losingTeamStrongholdDefense = 0;
+                    int losingTeamStrongholdSecures = 0;
+                    int losingTeamStrongholdAssists = 0;
+                    int losingTeamStrongholdCaptureSprees = 0;
+                    int losingTeamStrongholdLockdowns = 0;
+                    int losingTeamStrongholdTotalControls = 0;
+
+                    var sortedPlayersByStrongholdObjective = @Model.PlayerStats.PlayerStats.OrderByDescending(player => player.Rank).OrderByDescending(player => (strongholdCaptures(player) +
+                                                                                                                                                                  strongholdDefense(player) +
+                                                                                                                                                                  strongholdSecures(player)));
+
+
+                }
+
+                @foreach (var player in sortedPlayersByStrongholdObjective) //Winning Team Strongholds Stats
+                {
+                    //TODO Instead of using sortedPlayersByKills, we are going to need winningTeamTotalFlagObjectiveStats.
+
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                            <td>
+                                @(strongholdCaptures(player) + strongholdDefense(player) + strongholdSecures(player))
+                            </td>
+                            <td>@strongholdCaptures(player)</td>
+                            <td>@strongholdDefense(player)</td>
+                            <td>@strongholdSecures(player)</td>
+                            <td>@strongholdAssists(player)</td>
+                            <td>@strongholdCaptureSprees(player)</td>
+                            <td>@strongholdLockdowns(player)</td>
+                            <td>@strongholdTotalControls(player)</td>
+                        </tr>
+
+                        winningTeamStrongholdCaptures += strongholdCaptures(player);
+                        winningTeamStrongholdDefense += strongholdDefense(player);
+                        winningTeamStrongholdSecures += strongholdSecures(player);
+                        winningTeamStrongholdAssists += strongholdAssists(player);
+                        winningTeamStrongholdCaptureSprees += strongholdCaptureSprees(player);
+                        winningTeamStrongholdLockdowns += strongholdLockdowns(player);
+                        winningTeamStrongholdTotalControls += strongholdTotalControls(player);
+                    }
+                }
+
+                @{
+                    int winningTeamTotalStrongholdObjectiveStats = winningTeamStrongholdCaptures + winningTeamStrongholdDefense + winningTeamStrongholdSecures;
+                }
+
+                <tr>
+                    <td align="center">@winningTeamName(winningTeamId)</td>
+                    <td>@winningTeamTotalStrongholdObjectiveStats</td>
+                    <td>@winningTeamStrongholdCaptures</td>
+                    <td>@winningTeamStrongholdDefense</td>
+                    <td>@winningTeamStrongholdSecures</td>
+                    <td>@winningTeamStrongholdAssists</td>
+                    <td>@winningTeamStrongholdCaptureSprees</td>
+                    <td>@winningTeamStrongholdLockdowns</td>
+                    <td>@winningTeamStrongholdTotalControls</td>
+                </tr>
+
+                @foreach (var player in sortedPlayersByStrongholdObjective) //Losing Team Strongholds Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                    {
+                        losingTeamStrongholdCaptures += strongholdCaptures(player);
+                        losingTeamStrongholdDefense += strongholdDefense(player);
+                        losingTeamStrongholdSecures += strongholdSecures(player);
+                        losingTeamStrongholdAssists += strongholdAssists(player);
+                        losingTeamStrongholdCaptureSprees += strongholdCaptureSprees(player);
+                        losingTeamStrongholdLockdowns += strongholdLockdowns(player);
+                        losingTeamStrongholdTotalControls += strongholdTotalControls(player);
+                    }
+                }
+
+                @{
+                    int losingTeamTotalStrongholdObjectiveStats = losingTeamStrongholdCaptures + losingTeamStrongholdDefense + losingTeamStrongholdSecures;
+                }
+
+                <tr>
+                    <td align="center">@losingTeamName(winningTeamId)</td>
+                    <td>@losingTeamTotalStrongholdObjectiveStats</td>
+                    <td>@losingTeamStrongholdCaptures</td>
+                    <td>@losingTeamStrongholdDefense</td>
+                    <td>@losingTeamStrongholdSecures</td>
+                    <td>@losingTeamStrongholdAssists</td>
+                    <td>@losingTeamStrongholdCaptureSprees</td>
+                    <td>@losingTeamStrongholdLockdowns</td>
+                    <td>@losingTeamStrongholdTotalControls</td>
+                </tr>
+
+                @foreach (var player in sortedPlayersByStrongholdObjective) //Losing Team Stronghold Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                            <td>
+                                @(strongholdCaptures(player) + strongholdDefense(player) + strongholdSecures(player))
+                            </td>
+                            <td>@strongholdCaptures(player)</td>
+                            <td>@strongholdDefense(player)</td>
+                            <td>@strongholdSecures(player)</td>
+                            <td>@strongholdAssists(player)</td>
+                            <td>@strongholdCaptureSprees(player)</td>
+                            <td>@strongholdLockdowns(player)</td>
+                            <td>@strongholdTotalControls(player)</td>
+                        </tr>
+                    }
+                }
+            </table>
+            <br />
+        </div>
+        break;
+
+    case "Oddball HCS":
+        @:
+        <div>
+            <h2>Objective: @gameTypeName</h2><br />
+        </div>
+        <div>
+            <table width="100%">
+                <tr>
+                    <th>Gamer Tag</th>
+                    <th title="Ball Held Duration">Ball Held Duration</th>
+                    <th title="Ballsassination">Ballsassination</th>
+                    <th title="Carrier Kill">Carrier Kill</th>
+                    <th title="Carrier Protected">Carrier Protected</th>
+                    <th title="First Touch">First Touch</th>
+                    <th title="Oddball Kill">Oddball Kill</th>
+                </tr>
+
+                @{
+                    int BallHeldDuration(ArenaPlayerStat player) { return player.Impulses.Where(Impulse => Impulse.Id == 2483589021).FirstOrDefault()?.Count ?? 0; }
+                    int Ballsassination(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 105976035).FirstOrDefault()?.Count ?? 0; }
+                    int CarrierKill(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 2615178569).FirstOrDefault()?.Count ?? 0; }
+                    int CarrierProtected(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 1638349322).FirstOrDefault()?.Count ?? 0; }
+                    int FirstTouch(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 2971193992).FirstOrDefault()?.Count ?? 0; }
+                    int OddballKill(ArenaPlayerStat player) { return player.MedalAwards.Where(MedalAward => MedalAward.MedalId == 3910677154).FirstOrDefault()?.Count ?? 0; }
+
+                    int winningTeamBallHeldDuration = 0;
+                    int winningTeamBallsassinations = 0;
+                    int winningTeamCarrierKills = 0;
+                    int winningTeamCarriersProtected = 0;
+                    int winningTeamFirstTouches = 0;
+                    int winningTeamOddballKills = 0;
+
+                    int losingTeamBallHeldDuration = 0;
+                    int losingTeamBallsassinations = 0;
+                    int losingTeamCarrierKills = 0;
+                    int losingTeamCarriersProtected = 0;
+                    int losingTeamFirstTouches = 0;
+                    int losingTeamOddballKills = 0;
+
+                    var sortedPlayersByOddballObjective = @Model.PlayerStats.PlayerStats.OrderByDescending(player => player.Rank).OrderByDescending(player => (BallHeldDuration(player)));
+
+                }
+
+                @foreach (var player in sortedPlayersByOddballObjective) //Winning Team Oddballs Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                            <td>@BallHeldDuration(player)</td>
+                            <td>@Ballsassination(player)</td>
+                            <td>@CarrierKill(player)</td>
+                            <td>@CarrierProtected(player)</td>
+                            <td>@FirstTouch(player)</td>
+                            <td>@OddballKill(player)</td>
+                        </tr>
+
+                        winningTeamBallHeldDuration += BallHeldDuration(player);
+                        winningTeamBallsassinations += Ballsassination(player);
+                        winningTeamCarrierKills += CarrierKill(player);
+                        winningTeamCarriersProtected += CarrierProtected(player);
+                        winningTeamFirstTouches += FirstTouch(player);
+                        winningTeamOddballKills += OddballKill(player);
+                    }
+                }
+
+                @{
+                    int winningTeamTotalOddballObjectiveStats = winningTeamBallsassinations + winningTeamCarriersProtected + winningTeamCarrierKills + winningTeamFirstTouches + winningTeamOddballKills;
+                }
+
+                <tr>
+                    <td align="center">@winningTeamName(winningTeamId)</td>
+                    <td>@winningTeamBallHeldDuration</td>
+                    <td>@winningTeamBallsassinations</td>
+                    <td>@winningTeamCarrierKills</td>
+                    <td>@winningTeamCarriersProtected</td>
+                    <td>@winningTeamFirstTouches</td>
+                    <td>@winningTeamOddballKills</td>
+                </tr>
+
+                @foreach (var player in sortedPlayersByOddballObjective) //Losing Team Oddballs Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                    {
+                        losingTeamBallHeldDuration += BallHeldDuration(player);
+                        losingTeamBallsassinations += Ballsassination(player);
+                        losingTeamCarrierKills += CarrierKill(player);
+                        losingTeamCarriersProtected += CarrierProtected(player);
+                        losingTeamFirstTouches += FirstTouch(player);
+                        losingTeamOddballKills += OddballKill(player);
+                    }
+                }
+
+                @{
+                    int losingTeamTotalOddballObjectiveStats = losingTeamBallsassinations + losingTeamCarriersProtected + losingTeamCarrierKills + losingTeamFirstTouches + losingTeamOddballKills;
+                }
+
+                <tr>
+                    <td align="center">@losingTeamName(winningTeamId)</td>
+                    <td>@losingTeamBallHeldDuration</td>
+                    <td>@losingTeamBallsassinations</td>
+                    <td>@losingTeamCarrierKills</td>
+                    <td>@losingTeamCarriersProtected</td>
+                    <td>@losingTeamFirstTouches</td>
+                    <td>@losingTeamOddballKills</td>
+                </tr>
+
+                @foreach (var player in sortedPlayersByOddballObjective) //Losing Team Oddball Stats
+                {
+                    if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId != winningTeamId)
+                    {
+                        <tr>
+                            <td>@player.Player.Gamertag</td>
+                            <td>@BallHeldDuration(player)</td>
+                            <td>@Ballsassination(player)</td>
+                            <td>@CarrierKill(player)</td>
+                            <td>@CarrierProtected(player)</td>
+                            <td>@FirstTouch(player)</td>
+                            <td>@OddballKill(player)</td>
+                        </tr>
+                    }
+                }
+            </table>
+            <br />
+        </div>
         break;
 }
 
