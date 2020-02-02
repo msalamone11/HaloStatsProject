@@ -1,12 +1,15 @@
 ﻿@page
 @model MatchDetailsModel
 @using HaloEzAPI.Model.Response.Stats.Halo5.Arena;
+@using HaloEzAPI.Model.Response.MetaData.Halo5;
 
 @{
     // ViewData["Title"] = "Match Details";
 
-    ViewData["Title"] = Model.GameTypeName.Name;
     string gameTypeName = Model.GameTypeName.Name;
+    Map mapName = Model.Maps.Where(map => Model.PlayerStats.MapId == map.Id).First();
+
+    ViewData["Title"] = mapName.Name + " " + Model.GameTypeName.Name;
 
     int currentCSR(ArenaPlayerStat player)
     {
@@ -707,8 +710,6 @@
 
                 @foreach (var player in sortedPlayersByFlagObjective) //Winning Team CTF Stats
                 {
-                    //TODO Instead of using sortedPlayersByKills, we are going to need winningTeamTotalFlagObjectiveStats.
-
                     if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
                     {
                         <tr>
@@ -872,8 +873,6 @@
 
                 @foreach (var player in sortedPlayersByStrongholdObjective) //Winning Team Strongholds Stats
                 {
-                    //TODO Instead of using sortedPlayersByKills, we are going to need winningTeamTotalFlagObjectiveStats.
-
                     if (Model.PlayerStats.TeamStats.FirstOrDefault().Rank < 5 && player.TeamId == winningTeamId)
                     {
                         <tr>
@@ -1098,13 +1097,3 @@
         break;
 }
 
-@{
-    /* TODO Need to add in an Objectives table for if the game is a Strongholds or CTF gametype.
-     * TODO How do we get the Objective stats? I believe you are supposed to use 'TeamStats' in MatchResult.
-     *        https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/Halo-5-Match-Result-Arena?
-     * TODO Use https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/Halo-5-Match-Result-Arena?
-     *        to get the players CSR using a combination of 'Tier' as well as 'PercentToNextTier'.
-     *        Players above 1500 will just be able to use the 'CSR' property.
-     *
-     */
-}

@@ -4,6 +4,7 @@
 @using HaloEzAPI.Model.Response.MetaData.Halo5;
 @using Variables;
 @using HaloStatsProject.Pages;
+@using HaloEzAPI;
 
 @{
 }
@@ -32,9 +33,13 @@
 
                         if (mapId == null) { mapId = "Unknown"; }
 
-                        string gameTypeName = ""; //TODO Have to get the gameTypeName here.
+                        //var hApi = new HaloAPIService();
 
-                        if (mapId == "Unknown" && gameTypeName == "CTF Time Return HCS")
+                        //GameVariant gameTypeName = await Model.haloAPIService.GetGameVariant(match.GameVariantResourceId.ResourceId.ToString());
+
+                        GameVariant gameTypeName = Model.gameVariants.Where(gameType => match.GameVariant.ResourceId == gameType.Id).First();
+
+                        if (mapId == "Unknown" && gameTypeName.Name == "CTF Time Return HCS")
                         {
                             mapId = "Refuge HCS";
                         }
@@ -42,7 +47,7 @@
                         @player.Result @player.Rank
 
                         <div>
-                            <a href="/MatchDetails?matchId=@match.Id.MatchId">@mapId</a>
+                            <a href="/MatchDetails?matchId=@match.Id.MatchId">@gameTypeName @mapId</a>
                             K/D: @KillDeathsRatio
                         </div>
                         <div>

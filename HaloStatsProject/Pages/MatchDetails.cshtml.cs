@@ -22,6 +22,7 @@ namespace HaloStatsProject.Pages
         public IEnumerable<Impulse> Impulses { get; set; }
 
         public IEnumerable<Medal> MedalAwards { get; set; }
+        public IEnumerable<Map> Maps { get; private set; }
 
         public async Task OnGetAsync(string matchId)
         {
@@ -36,6 +37,9 @@ namespace HaloStatsProject.Pages
             Impulses = await haloApiService.GetImpulses();
 
             MedalAwards = await haloApiService.GetMedals();
-    }
+
+            Maps = await haloApiService.GetMaps();
+
+        }
     }
 }

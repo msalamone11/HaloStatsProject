@@ -1,9 +1,11 @@
 ﻿<Properties StartupConfiguration="{3F3118E8-2D22-4F30-A9BA-2B2DFF96B282}|Default">
   <MonoDevelop.Ide.ItemProperties.HaloStatsProject PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/MatchDetails.cshtml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/Player.cshtml.cs">
     <Files>
-      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml" Line="822" Column="28" />
-      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml.cs" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml" Line="872" Column="18" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml.cs" Line="1" Column="1" />
+      <File FileName="HaloStatsProject/Pages/Player.cshtml.cs" Line="1" Column="1" />
+      <File FileName="HaloStatsProject/Pages/Player.cshtml" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,8 +19,10 @@
               <Node name="Models" expanded="True" />
               <Node name="Pages" expanded="True">
                 <Node name="Index.cshtml" expanded="True" />
-                <Node name="MatchDetails.cshtml" expanded="True" selected="True" />
-                <Node name="Player.cshtml" expanded="True" />
+                <Node name="MatchDetails.cshtml" expanded="True" />
+                <Node name="Player.cshtml" expanded="True">
+                  <Node name="Player.cshtml.cs" selected="True" />
+                </Node>
                 <Node name="Privacy.cshtml" expanded="True" />
               </Node>
               <Node name="Variables" expanded="True" />
