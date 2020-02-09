@@ -1,11 +1,11 @@
 ﻿<Properties StartupConfiguration="{3F3118E8-2D22-4F30-A9BA-2B2DFF96B282}|Default">
   <MonoDevelop.Ide.ItemProperties.HaloStatsProject PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/Player.cshtml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/Player.cshtml">
     <Files>
-      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml" Line="872" Column="18" />
-      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml.cs" Line="1" Column="1" />
-      <File FileName="HaloStatsProject/Pages/Player.cshtml.cs" Line="1" Column="1" />
-      <File FileName="HaloStatsProject/Pages/Player.cshtml" Line="1" Column="1" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml" Line="677" Column="61" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml.cs" />
+      <File FileName="HaloStatsProject/Pages/Player.cshtml.cs" />
+      <File FileName="HaloStatsProject/Pages/Player.cshtml" Line="48" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,15 +14,15 @@
             <Node name="Solution Items" expanded="True" />
             <Node name="HaloStatsProject" expanded="True">
               <Node name="Dependencies" expanded="True">
-                <Node name="PackageDependencies" expanded="True" />
+                <Node name="PackageDependencies" expanded="True">
+                  <Node name="HaloEzAPI" selected="True" />
+                </Node>
               </Node>
               <Node name="Models" expanded="True" />
               <Node name="Pages" expanded="True">
                 <Node name="Index.cshtml" expanded="True" />
                 <Node name="MatchDetails.cshtml" expanded="True" />
-                <Node name="Player.cshtml" expanded="True">
-                  <Node name="Player.cshtml.cs" selected="True" />
-                </Node>
+                <Node name="Player.cshtml" expanded="True" />
                 <Node name="Privacy.cshtml" expanded="True" />
               </Node>
               <Node name="Variables" expanded="True" />
@@ -35,7 +35,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/Pages/Player.cshtml" relfile="HaloStatsProject/Pages/Player.cshtml" line="45" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

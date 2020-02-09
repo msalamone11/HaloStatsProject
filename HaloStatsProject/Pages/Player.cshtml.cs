@@ -6,7 +6,6 @@ using HaloEzAPI.Model.Response.MetaData.Halo5;
 using HaloEzAPI.Model.Response.Stats.Halo5;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using HaloEzAPI.Model.Response.Stats.Halo5.Arena;
 using System.Linq;
 
 namespace HaloStatsProject.Pages
@@ -22,7 +21,7 @@ namespace HaloStatsProject.Pages
         public string GamerTag { get; private set; }
         public GameVariant GameTypeName;
         public HaloAPIService haloAPIService { get; set; }
-        public List<GameVariant> gameVariants;
+        public Dictionary<string, GameVariant> gameVariants;
 
         public UserModel (ILogger<UserModel> logger) {
             _logger = logger;
@@ -37,17 +36,28 @@ namespace HaloStatsProject.Pages
             Maps = await haloAPIService.GetMaps ();
             SeasonIdName = await haloAPIService.GetSeasons ();
             GameType = await haloAPIService.GetGameBaseVariants ();
-
-            var m = Matches.Results.Select(match => match.GameVariant.ResourceId.ToString()).ToList();
-
-            var l = new List<GameVariant>();
-
+            var d = new Dictionary<string, GameVariant>();
+            List<string> m = Matches.Results.Select(match => match.GameVariant.ResourceId.ToString()).ToList();
             foreach (var item in m)
             {
-                l.Add(await haloAPIService.GetGameVariant(item));
+                var res = await haloAPIService.GetGameVariant(item);
+
+                if (!d.Keys.Contains(item))
+                {
+                    d.Add(item, res);
+                }
+
+                if (d.Keys.Count == 25)
+                {
+                    break;
+                }
+
+                await Task.Delay(1000);
+                
             }
 
-            gameVariants = l;
+            gameVariants = d;
+
 
         }
     }

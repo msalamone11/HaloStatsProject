@@ -1,19 +1,20 @@
 ﻿@page
 @model UserModel
 @using HaloEzAPI.Model.Response.Stats.Halo5;
-@using HaloEzAPI.Model.Response.MetaData.Halo5;
 @using Variables;
-@using HaloStatsProject.Pages;
-@using HaloEzAPI;
+@using System.Collections.Generic;
+@using HaloEzAPI.Model.Response.MetaData.Halo5;
+@using System.Linq;
 
 @{
+    string gamerTag = Model.GamerTag; //TODO - Whis the gamertag coming back a null?
 }
 
 <div class="container">
     <div class="row">
         <div class="col-sm">
             <div style="background-color:lightgrey;">
-                Last Games for @Model.GamerTag
+                Last Games for @gamerTag
             </div>
             <div>
                 <label for="Arena">Arena</label>
@@ -33,21 +34,30 @@
 
                         if (mapId == null) { mapId = "Unknown"; }
 
-                        //var hApi = new HaloAPIService();
+                        string gameTypeName = "";
 
-                        //GameVariant gameTypeName = await Model.haloAPIService.GetGameVariant(match.GameVariantResourceId.ResourceId.ToString());
+                        Dictionary<string, GameVariant> gameVariants = Model.gameVariants;
 
-                        GameVariant gameTypeName = Model.gameVariants.Where(gameType => match.GameVariant.ResourceId == gameType.Id).First();
+                        //gameTypeName = Model.gameVariants.Where(gameType => match.GameVariant.ResourceId == gameType.Value.Id).First().ToString();
 
-                        if (mapId == "Unknown" && gameTypeName.Name == "CTF Time Return HCS")
+                        foreach (var item in gameVariants) //TODO - What is the LINQ equivalent of this?
                         {
-                            mapId = "Refuge HCS";
+                            if (item.Value.Id == match.GameVariant.ResourceId)
+                            {
+                                gameTypeName = item.Value.Name;
+                                break;
+                            }
+                        }
+
+                        if (mapId == "Unknown" && gameTypeName == "CTF Time Return HCS")
+                        {
+                            mapId = "Refuge";
                         }
 
                         @player.Result @player.Rank
 
                         <div>
-                            <a href="/MatchDetails?matchId=@match.Id.MatchId">@gameTypeName @mapId</a>
+                            <a href="/MatchDetails?matchId=@match.Id.MatchId">@gameTypeName on @mapId</a>
                             K/D: @KillDeathsRatio
                         </div>
                         <div>
@@ -59,26 +69,6 @@
                     }
                 </div>
             }
-        </div>
-        <div class="col-sm">
-            <div class="col">
-
-                <div style="background-color:lightgrey;">
-                    HCS Season ID / GameType / Map ID
-                </div>
-                @foreach (var match in Model.Matches.Results)
-                {
-
-                    <div>
-
-                        @foreach (MatchPlayer player in @match.Players)
-                        {
-                            <span>Use latest match endpoint instead</span>
-                            @player.Player.Gamertag
-                        }
-                    </div>
-                }
-            </div>
         </div>
     </div>
 </div>
