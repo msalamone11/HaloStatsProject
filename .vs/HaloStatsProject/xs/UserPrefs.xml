@@ -1,8 +1,11 @@
 ﻿<Properties StartupConfiguration="{3F3118E8-2D22-4F30-A9BA-2B2DFF96B282}|Default">
   <MonoDevelop.Ide.ItemProperties.HaloStatsProject PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/MatchDetails.cshtml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HaloStatsProject/Pages/MatchHistory.cshtml.cs">
     <Files>
-      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml" Line="556" Column="84" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml" Line="677" Column="61" />
+      <File FileName="HaloStatsProject/Pages/MatchDetails.cshtml.cs" />
+      <File FileName="HaloStatsProject/Pages/MatchHistory.cshtml" Line="1" Column="1" />
+      <File FileName="HaloStatsProject/Pages/MatchHistory.cshtml.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -10,22 +13,21 @@
           <Node name="HaloStatsProject" expanded="True">
             <Node name="Solution Items" expanded="True" />
             <Node name="HaloStatsProject" expanded="True">
-              <Node name="Dependencies" expanded="True" />
+              <Node name="Dependencies" expanded="True">
+                <Node name="PackageDependencies" expanded="True" />
+              </Node>
+              <Node name="Models" expanded="True" />
               <Node name="Pages" expanded="True">
                 <Node name="Index.cshtml" expanded="True" />
-                <Node name="MatchDetails.cshtml" expanded="True" selected="True" />
-                <Node name="Player.cshtml" expanded="True" />
+                <Node name="MatchDetails.cshtml" expanded="True" />
+                <Node name="MatchHistory.cshtml" expanded="True">
+                  <Node name="MatchHistory.cshtml.cs" selected="True" />
+                </Node>
                 <Node name="Privacy.cshtml" expanded="True" />
               </Node>
               <Node name="Variables" expanded="True" />
-              <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>player</Value>
         </State>
       </Pad>
     </Pads>
@@ -33,7 +35,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/Pages/MatchHistory.cshtml" relfile="HaloStatsProject/Pages/MatchHistory.cshtml" line="45" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

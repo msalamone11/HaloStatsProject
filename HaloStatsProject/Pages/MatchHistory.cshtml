@@ -1,0 +1,74 @@
+﻿@page
+@model UserModel
+@using HaloEzAPI.Model.Response.Stats.Halo5;
+@using Variables;
+@using System.Collections.Generic;
+@using HaloEzAPI.Model.Response.MetaData.Halo5;
+@using System.Linq;
+
+@{
+    string gamerTag = Model.GamerTag; //TODO - Whis the gamertag coming back a null?
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div style="background-color:lightgrey;">
+                Last Games for @gamerTag
+            </div>
+            <div>
+                <label for="Arena">Arena</label>
+                <input type="radio" value="Arena" selected>
+                <label for="Custom Games">Custom Games</label>
+                <input type="radio" value="Custom Games">
+            </div>
+
+            @foreach (var match in Model.Matches.Results)
+            {
+                <div>
+
+                    @foreach (MatchPlayer player in match.Players)
+                    {
+                        string mapId = Model.Maps.Where(map => map.Id == match.MapId).First().Name;
+                        double KillDeathsRatio = new GetKillDeathRatio(player).ratio; // double result = (double)a / b;
+
+                        if (mapId == null) { mapId = "Unknown"; }
+
+                        string gameTypeName = "";
+
+                        Dictionary<string, GameVariant> gameVariants = Model.gameVariants;
+
+                        //gameTypeName = Model.gameVariants.Where(gameType => match.GameVariant.ResourceId == gameType.Value.Id).First().ToString();
+
+                        foreach (var item in gameVariants) //TODO - What is the LINQ equivalent of this?
+                        {
+                            if (item.Value.Id == match.GameVariant.ResourceId)
+                            {
+                                gameTypeName = item.Value.Name;
+                                break;
+                            }
+                        }
+
+                        if (mapId == "Unknown" && gameTypeName == "CTF Time Return HCS")
+                        {
+                            mapId = "Refuge";
+                        }
+
+                        @player.Result @player.Rank
+
+                        <div>
+                            <a href="/MatchDetails?matchId=@match.Id.MatchId">@gameTypeName on @mapId</a>
+                            K/D: @KillDeathsRatio
+                        </div>
+                        <div>
+                            Kills: @player.TotalKills
+                            Assists: @player.TotalAssists
+                            Deaths: @player.TotalDeaths
+                        </div>
+                        <br />
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
