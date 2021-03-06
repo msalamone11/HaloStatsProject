@@ -921,28 +921,30 @@
     ]
   },
   "packageFolders": {
-    "/Users/marksalamone/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\msala\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/HaloStatsProject.csproj",
+      "projectUniqueName": "C:\\Users\\msala\\Documents\\Technical-Repositories\\Web-Sites\\HaloStatsProject\\HaloStatsProject\\HaloStatsProject.csproj",
       "projectName": "HaloStatsProject",
-      "projectPath": "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/HaloStatsProject.csproj",
-      "packagesPath": "/Users/marksalamone/.nuget/packages/",
-      "outputPath": "/Users/marksalamone/Documents/Technical-Repositories/Web-Sites/HaloStatsProject/HaloStatsProject/obj/",
+      "projectPath": "C:\\Users\\msala\\Documents\\Technical-Repositories\\Web-Sites\\HaloStatsProject\\HaloStatsProject\\HaloStatsProject.csproj",
+      "packagesPath": "C:\\Users\\msala\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\msala\\Documents\\Technical-Repositories\\Web-Sites\\HaloStatsProject\\HaloStatsProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/marksalamone/.config/NuGet/NuGet.Config"
+        "C:\\Users\\msala\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -988,8 +990,20 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.NETCore.App.Host.osx-x64",
-            "version": "[3.0.2, 3.0.2]"
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.0.1, 3.0.1]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.0.3, 3.0.3]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.0.0, 3.0.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[3.0.0, 3.0.0]"
           }
         ],
         "frameworkReferences": {
@@ -1000,7 +1014,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.101/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
       }
     }
   },
